@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOM5
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "Ao transformar o poema visual original em uma par\xF3dia com formato
+    de rel\xF3gio, o autor busca principalmente:"
+  opcao:
+  - Manter apenas o desenho, sem alterar o sentido do texto.
+  - "Copiar a estrutura do poema sem mudan\xE7as de conte\xFAdo."
+  - "Recriar o texto original com novo tema, usando a forma visual para refor\xE7ar
+    a ideia apresentada.\t\t\t\t\t\t\t\t\t "
+  - "Eliminar a rela\xE7\xE3o entre imagem e linguagem verbal.\t\t\t\t\t\t\t\t\t "
+  Nivel: 1
+  ImgQuestao: {fileID: 0}
+  correto: 00000100
+  Ajuda: "Em alguns poemas, a disposi\xE7\xE3o das palavras tamb\xE9m forma imagens,
+    contribuindo para o sentido do texto."

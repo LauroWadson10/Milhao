@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOF5
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "Na constru\xE7\xE3o de uma par\xF3dia po\xE9tica, \xE9 comum que o
+    autor mantenha a mancha gr\xE1fica do texto original. Esse recurso visual tem
+    como objetivo principal:    "
+  opcao:
+  - "Esconder que o texto \xE9 uma c\xF3pia do original. \t\t\t\t\t\t\t\t\t "
+  - "Fazer com que o leitor identifique imediatamente qual texto est\xE1 sendo parodiado.\t\t\t\t\t\t\t\t\t "
+  - "Demonstrar que o autor n\xE3o tem criatividade para criar novas formas. \t\t\t\t\t\t\t\t\t "
+  - "Indicar que o poema original foi escrito de forma errada.\t\t\t\t\t\t\t\t\t "
+  Nivel: 0
+  ImgQuestao: {fileID: 0}
+  correto: 00010000
+  Ajuda: "A mancha gr\xE1fica refere-se \xE0 forma como o texto se organiza visualmente
+    na p\xE1gina, como a disposi\xE7\xE3o dos versos e estrofes, podendo contribuir
+    para a constru\xE7\xE3o de sentidos. Em alguns casos, essa organiza\xE7\xE3o
+    pode se destacar visualmente e refor\xE7ar o significado do poema.    "

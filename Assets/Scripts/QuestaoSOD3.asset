@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOD3
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "ALMA MOLE, VIDA DURA.  TANTO BATE AT\xC9 QUE CURA.  O texto apresentado
+    estabelece rela\xE7\xE3o com o prov\xE9rbio \u201C\xC1gua mole em pedra dura,
+    tanto bate at\xE9 que fura\u201D. No prov\xE9rbio original, a ideia \xE9 de persist\xEAncia
+    (insistir at\xE9 conseguir). J\xE1 na par\xF3dia po\xE9tica da imagem, ao trocar
+    \u201C\xE1gua\u201D por \u201Calma\u201D e \u201Cfura\u201D por \u201Ccura\u201D,
+    o autor sugere que: "
+  opcao:
+  - "A alma \xE9 fr\xE1gil e sempre acaba sendo destru\xEDda pela vida. "
+  - "\xC9 preciso bater na pedra at\xE9 que ela se transforme em rem\xE9dio. "
+  - "O sofrimento e as dificuldades da vida podem levar a um processo de aprendizado
+    ou cicatriza\xE7\xE3o emocional. "
+  - "A vida \xE9 dura e n\xE3o h\xE1 nada que possa ser feito para mudar isso."
+  Nivel: 2
+  ImgQuestao: {fileID: 0}
+  correto: 00000100
+  Ajuda: "Prov\xE9rbios podem ser recriados de forma expressiva, mantendo sua estrutura
+    e explorando recursos como ritmo e sonoridade para produzir novos sentidos."

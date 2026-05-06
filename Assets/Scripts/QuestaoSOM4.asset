@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOM4
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "A semelhan\xE7a na distribui\xE7\xE3o dos versos entre o poema original
+    e a par\xF3dia permite ao leitor perceber que:"
+  opcao:
+  - "A forma do poema contribui para a constru\xE7\xE3o do efeito de surpresa final.\t\t\t\t\t\t\t\t\t "
+  - "A par\xF3dia ignora completamente a forma do texto original.\t\t\t\t\t\t\t\t\t "
+  - "A organiza\xE7\xE3o dos versos n\xE3o interfere no sentido do texto.\t\t\t\t\t\t\t\t\t "
+  - "O texto parodiado perde seu efeito cr\xEDtico.\t\t\t\t\t\t\t\t\t "
+  Nivel: 1
+  ImgQuestao: {fileID: 0}
+  correto: 01000000
+  Ajuda: "A forma como os versos s\xE3o organizados no poema pode contribuir para
+    a constru\xE7\xE3o de sentidos."

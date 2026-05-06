@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOF4
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "Para que o leitor compreenda totalmente o humor ou a melancolia da
+    par\xF3dia \"No meio do meu peito\", \xE9 necess\xE1rio que ele:     "
+  opcao:
+  - "Leia apenas o dicion\xE1rio de rimas. \t\t\t\t\t\t\t\t\t "
+  - "Conhe\xE7a a biografia completa do autor da par\xF3dia. \t\t\t\t\t\t\t\t\t "
+  - "Identifique a rela\xE7\xE3o com o poema original de Carlos Drummond de Andrade.
+    \t\t\t\t\t\t\t\t\t "
+  - "Ignore as semelhan\xE7as visuais entre os dois textos.\t\t\t\t\t\t\t\t\t "
+  Nivel: 0
+  ImgQuestao: {fileID: 0}
+  correto: 00000100
+  Ajuda: "Alguns textos dialogam com outros j\xE1 conhecidos, e compreender essa
+    rela\xE7\xE3o ajuda na interpreta\xE7\xE3o.    "

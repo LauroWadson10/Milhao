@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOF1
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "Analise o poema de Carlos Drummond de Andrade e a par\xF3dia constru\xEDda
+    a partir dele para responder \xE0s quest\xF5es:  Ao parodiar o texto, o autor:"
+  opcao:
+  - "Mant\xE9m a organiza\xE7\xE3o visual e altera o conte\xFAdo original."
+  - Muda completamente a forma do texto
+  - Apenas copia o texto original
+  - "N\xE3o estabelece rela\xE7\xE3o com o texto original"
+  Nivel: 0
+  ImgQuestao: {fileID: 0}
+  correto: 01000000
+  Ajuda: "Par\xF3dia po\xE9tica \xE9 a recria\xE7\xE3o de um texto j\xE1 existente,
+    mantendo elementos da sua estrutura, como ritmo, repeti\xE7\xE3o e organiza\xE7\xE3o
+    dos versos, mas modificando o conte\xFAdo para produzir novos sentidos. Por meio
+    da par\xF3dia, \xE9 poss\xEDvel criar efeitos como humor, cr\xEDtica ou reflex\xE3o,
+    estabelecendo um di\xE1logo entre o texto original e o novo texto."

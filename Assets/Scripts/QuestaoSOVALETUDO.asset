@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOVALETUDO
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "Leia o trecho do poema de Carlos Drummond de Andrade e observe os
+    versos propostos para uma par\xF3dia.  \u201CO mundo \xE9 grande e cabe nesta
+    janela sobre o mar. O mar \xE9 grande e cabe na cama e no colch\xE3o de amar.
+    O amor \xE9 grande e cabe no breve espa\xE7o de beijar\u201D.  VERSOS (1) A vida
+    \xE9 grande e cabe na tela do celular (2) A tela \xE9 grande e cabe no tempo
+    de deslizar (3) O tempo \xE9 breve e cabe no gesto de ignorar (4) A vida \xE9
+    longa e cheia de alegria constante (5) O tempo passa r\xE1pido quando estamos
+    felizes (6) A tela mostra imagens sem parar o dia inteiro  Quais versos mant\xEAm
+    a estrutura e o efeito de sentido do poema original, formando corretamente uma
+    par\xF3dia?"
+  opcao:
+  - "3 \u2013 4 \u2013 6\t\t\t\t\t\t\t\t\t "
+  - "1 \u2013 2 \u2013 5\t\t\t\t\t\t\t\t\t "
+  - "2 \u2013 5 \u2013 6\t\t\t\t\t\t\t\t\t "
+  - "1 \u2013 2 \u2013 3 \t\t\t\t\t\t\t\t\t "
+  Nivel: 3
+  ImgQuestao: {fileID: 0}
+  correto: 00000001
+  Ajuda: 

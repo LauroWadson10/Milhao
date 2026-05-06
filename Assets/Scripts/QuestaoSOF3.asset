@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bce019ccc36d724baf3b3a6312b6673, type: 3}
+  m_Name: QuestaoSOF3
+  m_EditorClassIdentifier: Assembly-CSharp::QuestaoSO
+  txtQuestao: "No poema, a repeti\xE7\xE3o da express\xE3o \u201Ctinha um vazio\u201D
+    \xE9 um recurso que serve para: "
+  opcao:
+  - "Indicar que o vazio \xE9 um fato passageiro. \t\t\t\t\t\t\t\t\t "
+  - "Mostrar que o autor cometeu um erro de digita\xE7\xE3o. \t\t\t\t\t\t\t\t\t "
+  - "Sugerir que o autor n\xE3o tinha outras palavras para usar.\t\t\t\t\t\t\t\t\t "
+  - "Enfatizar que o sentimento \xE9 intenso e persistente. \t\t\t\t\t\t\t\t\t "
+  Nivel: 0
+  ImgQuestao: {fileID: 0}
+  correto: 00000001
+  Ajuda: "A forma como as palavras se repetem em um texto pode contribuir para a
+    constru\xE7\xE3o de sentidos.    "
