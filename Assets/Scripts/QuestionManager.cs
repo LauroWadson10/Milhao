@@ -27,92 +27,92 @@ public class QuestionManager : MonoBehaviour
 
     readonly List<int> questoesDisponiveis = new();
 
-    void Start()
-    {
-        if (construirAoIniciar)
-        {
-            ReiniciarJogo();
-        }
-    }
+    //void Start()
+    //{
+    //    if (construirAoIniciar)
+    //    {
+    //        ReiniciarJogo();
+    //    }
+    //}
     
-    public void ReiniciarJogo()
-    {
-        pontuacao = 0;
-        nivelAtual = NivelQuestao.Facil;
+    ////public void ReiniciarJogo()
+    //{
+    //    pontuacao = 0;
+    //    nivelAtual = NivelQuestao.Facil;
 
-        PrepararQuestoesDisponives();
-        AtualizaPontuacao();
-        ConstruirProximaQuestao();
+    //    PrepararQuestoesDisponives();
+    //    AtualizaPontuacao();
+    //    ConstruirProximaQuestao();
         
-    }
+    //}
 
-    void PrepararQuestoesDisponives()
-    {
-        questoesDisponiveis.Clear();
-        if (questao == null)
-        {
-            return; 
-        }
+    //void PrepararQuestoesDisponives()
+    //{
+    //    questoesDisponiveis.Clear();
+    //    if (questao == null)
+    //    {
+    //        return; 
+    //    }
 
-        for (int i = 0; i < questao.Count; i++)
-        {
-            if (questao[i] != null)
-            {
-                questoesDisponiveis.Add(i);
-            }
-        }
-    }
+    //    for (int i = 0; i < questao.Count; i++)
+    //    {
+    //        if (questao[i] != null)
+    //        {
+    //            questoesDisponiveis.Add(i);
+    //        }
+    //    }
+    //}
 
-    int PegaQuestaoPorNivel()
-    {
-        for (int i = 0; i < questoesDisponiveis.Count; ++i)
-        {
-            int indiceQuestao = questoesDisponiveis[i];
+    //int PegaQuestaoPorNivel()
+    //{
+    //    for (int i = 0; i < questoesDisponiveis.Count; ++i)
+    //    {
+    //        int indiceQuestao = questoesDisponiveis[i];
 
-            if (questao[indiceQuestao].Nivel == nivelAtual)
-            {
-                questoesDisponiveis.RemoveAt(i);
-                return indiceQuestao;
-            }
-        }
-    }
+    //        if (questao[indiceQuestao].Nivel == nivelAtual)
+    //        {
+    //            questoesDisponiveis.RemoveAt(i);
+    //            return indiceQuestao;
+    //        }
+    //    }
+    //}
 
-    public void SelecionarOpcao(int indiceOpcao)
-    {
-        if (questaoAtual == null)
-        {
-            return;
-        }
+    //public void SelecionarOpcao(int indiceOpcao)
+    //{
+    //    if (questaoAtual == null)
+    //    {
+    //        return;
+    //    }
 
-        bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
+    //    bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
 
-        if (acertou)
-        {
-            pontuacao++;
-            AumentarDificuldade();
-        }
+    //    if (acertou)
+    //    {
+    //        pontuacao++;
+    //        AumentarDificuldade();
+    //    }
 
-        AtualizaPontuacao();
-        AtualizaFeedback(acertou, questaoAtual.IndiceCorreto);
-        DefineBotoesInterativos(false);
+    //    AtualizaPontuacao();
+    //    AtualizaFeedback(acertou, questaoAtual.IndiceCorreto);
+    //    DefineBotoesInterativos(false);
 
-        if (avancarAutomaticamente)
-        {
-            Invoke(nameof(ConstroiQuestao), Mathf.Max(0.1f, tempoParaAvancar));
-        }
-    }
+    //    if (avancarAutomaticamente)
+    //    {
+    //        Invoke(nameof(ConstroiQuestao), Mathf.Max(0.1f, tempoParaAvancar));
+    //    }
+    //}
 
-    void AumentarDificuldade()
-    {
-        if (nivelAtual == NivelQuestao.Facil)
-        {
-            nivelAtual = NivelQuestao.Medio;
-        }
-        else if (nivelAtual == NivelQuestao.Medio)
-        {
-            nivelAtual = NivelQuestao.Dificil;
-        }
-    }
+    //void AumentarDificuldade()
+    //{
+    //    if (nivelAtual == NivelQuestao.Facil)
+    //    {
+    //        nivelAtual = NivelQuestao.Medio;
+    //    }
+    //    else if (nivelAtual == NivelQuestao.Medio)
+    //    {
+    //        nivelAtual = NivelQuestao.Dificil;
+    //    }
+    //}
 
 
-}
+} 
