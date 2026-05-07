@@ -20,7 +20,7 @@ MonoBehaviour:
   - "A organiza\xE7\xE3o dos versos n\xE3o interfere no sentido do texto.\t\t\t\t\t\t\t\t\t "
   - "O texto parodiado perde seu efeito cr\xEDtico.\t\t\t\t\t\t\t\t\t "
   Nivel: 1
-  ImgQuestao: {fileID: 0}
+  imgQuestao: []
   correto: 01000000
   Ajuda: "A forma como os versos s\xE3o organizados no poema pode contribuir para
     a constru\xE7\xE3o de sentidos."

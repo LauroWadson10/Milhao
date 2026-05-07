@@ -8,7 +8,7 @@ public class QuestaoSO : ScriptableObject
     [SerializeField] public string txtQuestao;
     [SerializeField] public List<string> opcao = new(); 
     [SerializeField] public NivelQuestao Nivel;
-    [SerializeField] public Sprite ImgQuestao;
+    [SerializeField] public Sprite[] imgQuestao = new Sprite[2];
     [SerializeField] public List<bool> correto = new();
     [SerializeField] public string Ajuda;
 
