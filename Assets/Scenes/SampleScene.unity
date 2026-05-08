@@ -713,6 +713,7 @@ GameObject:
   - component: {fileID: 754925626}
   - component: {fileID: 754925625}
   - component: {fileID: 754925624}
+  - component: {fileID: 754925627}
   m_Layer: 5
   m_Name: ButtonRespC
   m_TagString: Untagged
@@ -785,13 +786,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 754925627}
+        m_TargetAssemblyTypeName: BotaoResposta, Assembly-CSharp
+        m_MethodName: Responde
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -835,6 +836,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 754925622}
   m_CullTransparentMesh: 1
+--- !u!114 &754925627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754925622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1a47fc13a328e46b3686e2402b4250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotaoResposta
 --- !u!1 &919726555
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,6 +860,7 @@ GameObject:
   - component: {fileID: 919726559}
   - component: {fileID: 919726558}
   - component: {fileID: 919726557}
+  - component: {fileID: 919726560}
   m_Layer: 5
   m_Name: ButtonRespD
   m_TagString: Untagged
@@ -918,7 +932,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 919726558}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 919726560}
+        m_TargetAssemblyTypeName: BotaoResposta, Assembly-CSharp
+        m_MethodName: Responde
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &919726558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -957,6 +983,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919726555}
   m_CullTransparentMesh: 1
+--- !u!114 &919726560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919726555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1a47fc13a328e46b3686e2402b4250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotaoResposta
 --- !u!1 &1103964830
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,6 +1007,7 @@ GameObject:
   - component: {fileID: 1103964834}
   - component: {fileID: 1103964833}
   - component: {fileID: 1103964832}
+  - component: {fileID: 1103964835}
   m_Layer: 5
   m_Name: ButtonRespA
   m_TagString: Untagged
@@ -1040,7 +1079,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1103964833}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1103964835}
+        m_TargetAssemblyTypeName: BotaoResposta, Assembly-CSharp
+        m_MethodName: Responde
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1103964833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1079,6 +1130,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103964830}
   m_CullTransparentMesh: 1
+--- !u!114 &1103964835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103964830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1a47fc13a328e46b3686e2402b4250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotaoResposta
 --- !u!1 &1115180395
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,6 +1776,7 @@ GameObject:
   - component: {fileID: 1510648358}
   - component: {fileID: 1510648357}
   - component: {fileID: 1510648356}
+  - component: {fileID: 1510648359}
   m_Layer: 5
   m_Name: ButtonRespB
   m_TagString: Untagged
@@ -1784,7 +1848,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1510648357}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1510648359}
+        m_TargetAssemblyTypeName: BotaoResposta, Assembly-CSharp
+        m_MethodName: Responde
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1510648357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1823,6 +1899,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510648354}
   m_CullTransparentMesh: 1
+--- !u!114 &1510648359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510648354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da1a47fc13a328e46b3686e2402b4250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BotaoResposta
 --- !u!1 &1520019215
 GameObject:
   m_ObjectHideFlags: 0

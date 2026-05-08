@@ -10,8 +10,6 @@ public class QuestaoSO : ScriptableObject
 
     [SerializeField] public List<string> opcao = new();
 
-    [SerializeField] public string respostaCorreta;
-
     [SerializeField] public NivelQuestao Nivel;
 
     [SerializeField] public Sprite[] imgQuestao = new Sprite[2];
@@ -40,59 +38,30 @@ public class QuestaoSO : ScriptableObject
         return imgQuestao != null && indice >= 0 && indice < imgQuestao.Length && imgQuestao[indice] != null;
     }
 
-    public bool OpcaoCorreta(int indice)
+    public string OpcaoCorreta()
     {
-        return correto != null && indice >= 0 && indice < correto.Count && correto[indice];
+        for(int i = 0; i < correto.Count; i++)
+        {
+            if (correto[i])
+                return opcao[i];
+        }
+
+        return null;
     }
 
-    public int IndiceCorreto
-    {
-        get
-        {
-            if (correto == null)
-            {
-                return -1;
-            }
+    //public bool EhOpcaoCorreta(int x)
+    //{
+    //    if(x == IndiceCorreto)
+    //    {
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
 
-            for (int i = 0; i < correto.Count; i++)
-            {
-                if (correto[i])
-                {
-                    return i;
-                }
-            }
 
-            return -1;
-        }
-    }
-
-    public bool EhOpcaoCorreta(int x)
-    {
-        if(x == IndiceCorreto)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    void OnValidate()
-    {
-        opcao ??= new List<string>();
-        correto ??= new List<bool>();
-
-        while (correto.Count < opcao.Count)
-        {
-            correto.Add(false);
-        }
-
-        while (correto.Count > opcao.Count)
-        {
-            correto.RemoveAt(correto.Count - 1);
-        }
-    }
     public enum NivelQuestao
     {
         Facil,

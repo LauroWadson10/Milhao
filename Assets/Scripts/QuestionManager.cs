@@ -62,7 +62,7 @@ public class QuestionManager : MonoBehaviour
 
     public void ConfirmaResposta(string resposta)
     {
-        if(resposta == questao[indiceQuestao].respostaCorreta)
+        if(resposta == questao[indiceQuestao].OpcaoCorreta())
         {
             print("Resposta correta");
         }
@@ -95,13 +95,13 @@ public class QuestionManager : MonoBehaviour
             return;
         }
 
-        bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
+        //bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
 
-        if (acertou)
-        {
-            pontuacao++;
-            AumentarDificuldade();
-        }
+        //if (acertou)
+        //{
+        //    pontuacao++;
+        //    AumentarDificuldade();
+        //}
 
         //AtualizaPontuacao();
         //AtualizaFeedback(acertou, questaoAtual.IndiceCorreto);
