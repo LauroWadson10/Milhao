@@ -27,17 +27,16 @@ public class QuestionManager : MonoBehaviour
 
     [Space]
     [Range(0, 5.0f)]
-    [SerializeField] float tempoParaAvancar = 1.5f;
+    [SerializeField] float tempoParaAvancar;
     [SerializeField] bool avancarAutomaticamente = true;
-    [SerializeField] int pontosPorAcerto = 1;
 
     NivelQuestao nivelAtual = NivelQuestao.Facil;
 
     int pontuacao;
-    int indiceQuestao = -1;
+    int indiceQuestao;
     bool respostaConfirmada;
-    Coroutine rotinaAvancar;
     readonly List<int> questoesRespondidas = new();
+    Coroutine rotinaAvancar;
 
     public static QuestionManager instance;
 
@@ -62,8 +61,7 @@ public class QuestionManager : MonoBehaviour
         pontuacao = 0;
         nivelAtual = NivelQuestao.Facil;
         questoesRespondidas.Clear();
-        AtualizaPontuacao();
-        ConstroiQuestao();
+        GeradorDeQuestao();
     }
 
     void GeradorDeQuestao()
@@ -75,17 +73,16 @@ public class QuestionManager : MonoBehaviour
     {
         if (!TentaPegarQuestao(out indiceQuestao))
         {
-            FinalizaJogo("Voce respondeu todas as perguntas!");
-            return;
+            //FinalizaJogo("Voce respondeu todas as perguntas!");
+            //return;
         }
 
         questaoAtual = questao[indiceQuestao];
         respostaConfirmada = false;
 
         AtualizaTextoQuestao();
-        AtualizaImagens();
-        AtualizaAjuda();
-        AtualizaFeedback(string.Empty);
+        //AtualizaImagens();
+        //AtualizaAjuda();
         ConfiguraBotoes();
     }
 
@@ -124,6 +121,7 @@ public class QuestionManager : MonoBehaviour
                 return true;
             }
 
+
             if (!AumentarDificuldade())
             {
                 return false;
@@ -131,6 +129,18 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
+    bool AumentarDificuldade()
+    {
+        int proximoNivel = (int)nivelAtual + 1;
+
+        if (proximoNivel > (int)NivelQuestao.ValeTudo)
+        {
+            return false;
+        }
+
+        nivelAtual = (NivelQuestao)proximoNivel;
+        return true;
+    }
     void AtualizaTextoQuestao()
     {
         if (txtQuestao != null)
@@ -139,35 +149,35 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    void AtualizaImagens()
-    {
-        if (imgQuestao == null)
-        {
-            return;
-        }
+    //void AtualizaImagens()
+    //{
+    //    if (imgQuestao == null)
+    //    {
+    //        return;
+    //    }
 
-        for (int i = 0; i < imgQuestao.Length; i++)
-        {
-            Image imagem = imgQuestao[i];
+    //    for (int i = 0; i < imgQuestao.Length; i++)
+    //    {
+    //        Image imagem = imgQuestao[i];
 
-            if (imagem == null)
-            {
-                continue;
-            }
+    //        if (imagem == null)
+    //        {
+    //            continue;
+    //        }
 
-            bool temImagem = questaoAtual.TemImagem(i);
-            imagem.gameObject.SetActive(temImagem);
-            imagem.sprite = temImagem ? questaoAtual.imgQuestao[i] : null;
-        }
-    }
+    //        bool temImagem = questaoAtual.TemImagem(i);
+    //        imagem.gameObject.SetActive(temImagem);
+    //        imagem.sprite = temImagem ? questaoAtual.imgQuestao[i] : null;
+    //    }
+    //}
 
-    void AtualizaAjuda()
-    {
-        if (txtAjuda != null)
-        {
-            txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
-        }
-    }
+    //void AtualizaAjuda()
+    //{
+    //    if (txtAjuda != null)
+    //    {
+    //        txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
+    //    }
+    //}
 
     void ConfiguraBotoes()
     {
@@ -235,48 +245,47 @@ public class QuestionManager : MonoBehaviour
 
         if (acertou)
         {
-            pontuacao += pontosPorAcerto;
-            AtualizaPontuacao();
-            AtualizaFeedback("Resposta correta!");
+            //AtualizaPontuacao();
+            //AtualizaFeedback("Resposta correta!");
 
-            if (nivelAtual == NivelQuestao.ValeTudo)
-            {
-                FinalizaJogo("Parabens, voce chegou ao fim!");
-                return;
-            }
+            //if (nivelAtual == NivelQuestao.ValeTudo)
+            //{
+            //    FinalizaJogo("Parabens, voce chegou ao fim!");
+            //    return;
+            //}
 
             AumentarDificuldade();
             AgendaProximaQuestao();
             return;
         }
 
-        string respostaCorreta = questaoAtual.OpcaoCorreta();
-        AtualizaFeedback(string.IsNullOrEmpty(respostaCorreta)
-            ? "Resposta errada."
-            : $"Resposta errada. Correta: {respostaCorreta}");
+        //string respostaCorreta = questaoAtual.OpcaoCorreta();
+        //AtualizaFeedback(string.IsNullOrEmpty(respostaCorreta)
+        //    ? "Resposta errada."
+        //    : $"Resposta errada. Correta: {respostaCorreta}");
     }
 
     void AgendaProximaQuestao()
-    {
-        if (!avancarAutomaticamente)
         {
-            return;
+            if (!avancarAutomaticamente)
+            {
+                return;
+            }
+
+            if (rotinaAvancar != null)
+            {
+                StopCoroutine(rotinaAvancar);
+            }
+
+            rotinaAvancar = StartCoroutine(AvancaDepoisDoTempo());
         }
 
-        if (rotinaAvancar != null)
+        IEnumerator AvancaDepoisDoTempo()
         {
-            StopCoroutine(rotinaAvancar);
+            yield return new WaitForSeconds(Mathf.Max(0.1f, tempoParaAvancar));
+            rotinaAvancar = null;
+            ConstroiQuestao();
         }
-
-        rotinaAvancar = StartCoroutine(AvancaDepoisDoTempo());
-    }
-
-    IEnumerator AvancaDepoisDoTempo()
-    {
-        yield return new WaitForSeconds(Mathf.Max(0.1f, tempoParaAvancar));
-        rotinaAvancar = null;
-        ConstroiQuestao();
-    }
 
     void DefineBotoesInterativos(bool ativo)
     {
@@ -294,38 +303,30 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    void AtualizaPontuacao()
-    {
-        if (txtPontuacao != null)
-        {
-            txtPontuacao.text = $"Pontuacao: {pontuacao}";
-        }
-    }
+    //void AtualizaPontuacao()
+    //{
+    //    if (txtPontuacao != null)
+    //    {
+    //        txtPontuacao.text = $"Pontuacao: {pontuacao}";
+    //    }
+    //}
 
-    void AtualizaFeedback(string mensagem)
-    {
-        if (txtFeedback != null)
-        {
-            txtFeedback.text = mensagem;
-        }
-    }
+    //void AtualizaFeedback(string mensagem)
+    //{
+    //    if (txtFeedback != null)
+    //    {
+    //        txtFeedback.text = mensagem;
+    //    }
+    //}
 
-    bool AumentarDificuldade()
-    {
-        int proximoNivel = (int)nivelAtual + 1;
 
-        if (proximoNivel > (int)NivelQuestao.ValeTudo)
-        {
-            return false;
-        }
 
-        nivelAtual = (NivelQuestao)proximoNivel;
-        return true;
-    }
-
-    void FinalizaJogo(string mensagem)
-    {
-        AtualizaFeedback(mensagem);
-        DefineBotoesInterativos(false);
-    }
+    //void FinalizaJogo(string mensagem)
+    //{
+    //    AtualizaFeedback(mensagem);
+    //    DefineBotoesInterativos(false);
+    //}
 }
+
+
+
