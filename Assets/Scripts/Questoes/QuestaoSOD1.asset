@@ -21,8 +21,12 @@ MonoBehaviour:
   - "Tornar o texto apenas uma c\xF3pia sem altera\xE7\xE3o."
   - "Refor\xE7ar a rela\xE7\xE3o com o texto de origem ao mesmo tempo em que produz
     um novo efeito de sentido."
+  respostaCorreta: "Refor\xE7ar a rela\xE7\xE3o com o texto de origem ao mesmo tempo
+    em que produz um novo efeito de sentido."
   Nivel: 2
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
+  - {fileID: 0}
   correto: 00000001
   Ajuda: "Par\xF3dias musicais podem ser consideradas po\xE9ticas quando mant\xEAm
     elementos da m\xFAsica original, como ritmo e estrutura, ao mesmo tempo em que

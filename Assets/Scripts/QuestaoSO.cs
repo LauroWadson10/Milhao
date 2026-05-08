@@ -8,7 +8,9 @@ public class QuestaoSO : ScriptableObject
     [TextArea(3,10)]
     [SerializeField] public string txtQuestao;
 
-    [SerializeField] public List<string> opcao = new(); 
+    [SerializeField] public List<string> opcao = new();
+
+    [SerializeField] public string respostaCorreta;
 
     [SerializeField] public NivelQuestao Nivel;
 
@@ -63,6 +65,19 @@ public class QuestaoSO : ScriptableObject
             return -1;
         }
     }
+
+    public bool EhOpcaoCorreta(int x)
+    {
+        if(x == IndiceCorreto)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void OnValidate()
     {
         opcao ??= new List<string>();

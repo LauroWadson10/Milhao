@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -9,59 +10,67 @@ public class QuestionManager : MonoBehaviour
 {
     [SerializeField] TMP_Text txtQuestao;
     [SerializeField] Image[] imgQuestao = new Image[2];
-
+    [Space]
+    [Header("UI")]
     [SerializeField] Button[] btnOpcoes = new Button[4];
-    [SerializeField] TMP_Text[] txtOpcoes = new TMP_Text[4];
-
+    [Space]
+    [Header("Textos")]
     [SerializeField] TMP_Text txtAjuda;
     [SerializeField] TMP_Text txtFeedback;
     [SerializeField] TMP_Text txtPontuacao;
-
+    [Space]
     [SerializeField] List<QuestaoSO> questao = new();
 
-    [SerializeField] bool construirAoIniciar = true;
-    [SerializeField] bool embaralharQuestoes = true;
-    [SerializeField] bool avancarAutomaticamente = true;
+    QuestaoSO questaoAtual;
+
+    [Space]
+    [Range(0,5.0f)]
+    [SerializeField] float tempoParaAvancar;
 
     NivelQuestao nivelAtual = NivelQuestao.Facil;
 
-    readonly List<int> questoesDisponiveis = new();
+    int pontuacao;
 
-    //void Start()
-    //{
-    //    if (construirAoIniciar)
-    //    {
-    //        ReiniciarJogo();
-    //    }
-    //}
-    
-    ////public void ReiniciarJogo()
-    //{
-    //    pontuacao = 0;
-    //    nivelAtual = NivelQuestao.Facil;
+    int indiceQuestao;
 
-    //    PrepararQuestoesDisponives();
-    //    AtualizaPontuacao();
-    //    ConstruirProximaQuestao();
-        
-    //}
+    public static QuestionManager instance;
 
-    //void PrepararQuestoesDisponives()
-    //{
-    //    questoesDisponiveis.Clear();
-    //    if (questao == null)
-    //    {
-    //        return; 
-    //    }
+    private void Awake()
+    {
+        instance = this;
+    }
 
-    //    for (int i = 0; i < questao.Count; i++)
-    //    {
-    //        if (questao[i] != null)
-    //        {
-    //            questoesDisponiveis.Add(i);
-    //        }
-    //    }
-    //}
+    void Start()
+    {
+        GeradorDeQuestao();
+    }
+
+    void GeradorDeQuestao()
+    {
+        do
+        {
+            indiceQuestao = Random.Range(0,questao.Count);
+        } while (questao[indiceQuestao].Nivel != nivelAtual);
+
+        txtQuestao.text = questao[indiceQuestao].txtQuestao;
+
+        for(int i = 0; i < btnOpcoes.Length; i++)
+        {
+            btnOpcoes[i].GetComponent<BotaoResposta>().RegistraResposta(questao[indiceQuestao].opcao[i]);
+        }
+    }
+
+    public void ConfirmaResposta(string resposta)
+    {
+        if(resposta == questao[indiceQuestao].respostaCorreta)
+        {
+            print("Resposta correta");
+        }
+        else
+        {
+            print("Resposta errada");
+        }
+    }
 
     //int PegaQuestaoPorNivel()
     //{
@@ -75,44 +84,42 @@ public class QuestionManager : MonoBehaviour
     //            return indiceQuestao;
     //        }
     //    }
+
+    //    return 0;
     //}
 
-    //public void SelecionarOpcao(int indiceOpcao)
-    //{
-    //    if (questaoAtual == null)
-    //    {
-    //        return;
-    //    }
+    public void SelecionarOpcao(int indiceOpcao)
+    {
+        if (questaoAtual == null)
+        {
+            return;
+        }
 
-    //    bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
+        bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
 
-    //    if (acertou)
-    //    {
-    //        pontuacao++;
-    //        AumentarDificuldade();
-    //    }
+        if (acertou)
+        {
+            pontuacao++;
+            AumentarDificuldade();
+        }
 
-    //    AtualizaPontuacao();
-    //    AtualizaFeedback(acertou, questaoAtual.IndiceCorreto);
-    //    DefineBotoesInterativos(false);
+        //AtualizaPontuacao();
+        //AtualizaFeedback(acertou, questaoAtual.IndiceCorreto);
+        //DefineBotoesInterativos(false);
 
-    //    if (avancarAutomaticamente)
-    //    {
-    //        Invoke(nameof(ConstroiQuestao), Mathf.Max(0.1f, tempoParaAvancar));
-    //    }
-    //}
+        //if (avancarAutomaticamente)
+        //{
+        //    Invoke(nameof(ConstroiQuestao), Mathf.Max(0.1f, tempoParaAvancar));
+        //}
+    }
 
-    //void AumentarDificuldade()
-    //{
-    //    if (nivelAtual == NivelQuestao.Facil)
-    //    {
-    //        nivelAtual = NivelQuestao.Medio;
-    //    }
-    //    else if (nivelAtual == NivelQuestao.Medio)
-    //    {
-    //        nivelAtual = NivelQuestao.Dificil;
-    //    }
-    //}
+    void ConstroiQuestao()
+    {
 
-    
+    }
+
+    void AumentarDificuldade()
+    {
+        nivelAtual++;
+    }
 } 
