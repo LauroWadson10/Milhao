@@ -35,6 +35,16 @@ public class QuestaoSO : ScriptableObject
 
     public bool TemAjuda => !string.IsNullOrWhiteSpace(Ajuda);
 
+    public bool TemImagem(int indice)
+    {
+        return imgQuestao != null && indice >= 0 && indice < imgQuestao.Length && imgQuestao[indice] != null;
+    }
+
+    public bool EhOpcaoCorreta(int indice)
+    {
+        return correto != null && indice >= 0 && indice < correto.Count && correto[indice];
+        Debug.Log($"Opção {indice} é correta: {correto[indice]}");
+    }
     public int IndiceCorreto
     {
         get
@@ -54,16 +64,6 @@ public class QuestaoSO : ScriptableObject
 
             return -1;
         }
-    }
-
-    public bool TemImagem(int indice)
-    {
-        return imgQuestao != null && indice >= 0 && indice < imgQuestao.Length && imgQuestao[indice] != null;
-    }
-
-    public bool EhOpcaoCorreta(int indice)
-    {
-        return correto != null && indice >= 0 && indice < correto.Count && correto[indice];
     }
 
     public string OpcaoCorreta()
@@ -88,25 +88,6 @@ public class QuestaoSO : ScriptableObject
             && indiceCorreto >= 0
             && indiceCorreto < opcao.Count;
     }
-
-    void OnValidate()
-    {
-        opcao ??= new List<string>();
-        correto ??= new List<bool>();
-
-        while (correto.Count < opcao.Count)
-        {
-            correto.Add(false);
-        }
-
-        while (correto.Count > opcao.Count)
-        {
-            correto.RemoveAt(correto.Count - 1);
-        }
-
-        imgQuestao ??= new Sprite[2];
-    }
-
     public enum NivelQuestao
     {
         Facil,

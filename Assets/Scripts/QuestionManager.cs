@@ -28,15 +28,18 @@ public class QuestionManager : MonoBehaviour
     [Space]
     [Range(0, 5.0f)]
     [SerializeField] float tempoParaAvancar;
-    [SerializeField] bool avancarAutomaticamente = true;
+    [SerializeField] bool avancarAutomaticamente = true; //temporariamente
+    [SerializeField] int perguntasPorNivel = 5;
 
     NivelQuestao nivelAtual = NivelQuestao.Facil;
 
-    int pontuacao;
-    int indiceQuestao;
-    bool respostaConfirmada;
-    readonly List<int> questoesRespondidas = new();
-    Coroutine rotinaAvancar;
+    int pontosPorAcerto = 0; //temporariamente
+    int pontuacao; 
+    int indiceQuestao; //índice da questão atual dentro da lista de questões
+    bool respostaConfirmada; //para que ele não permita clicar em mais de uma resposta
+    int contadorPerguntasNivel = 0;
+    readonly List<int> questoesRespondidas = new(); //para evitar repetir questões já respondidas
+    Coroutine rotinaAvancar; //para controlar a rotina de avançar automaticamente para a próxima questão 
 
     public static QuestionManager instance;
 
@@ -58,23 +61,19 @@ public class QuestionManager : MonoBehaviour
 
     public void IniciarJogo()
     {
-        pontuacao = 0;
-        nivelAtual = NivelQuestao.Facil;
-        questoesRespondidas.Clear();
-        GeradorDeQuestao();
+        pontuacao = 0; //temporariamente
+        nivelAtual = NivelQuestao.Facil; 
+        questoesRespondidas.Clear(); //limpa a lista de questões respondidas para começar do zero
+        ConstroiQuestao(); 
+        contadorPerguntasNivel = 0; 
+       
     }
-
-    void GeradorDeQuestao()
-    {
-        ConstroiQuestao();
-    }
-
     void ConstroiQuestao()
     {
         if (!TentaPegarQuestao(out indiceQuestao))
         {
-            //FinalizaJogo("Voce respondeu todas as perguntas!");
-            //return;
+            FinalizaJogo("Voce respondeu todas as perguntas!");
+            return;
         }
 
         questaoAtual = questao[indiceQuestao];
@@ -84,15 +83,17 @@ public class QuestionManager : MonoBehaviour
         //AtualizaImagens();
         //AtualizaAjuda();
         ConfiguraBotoes();
+        
     }
 
-    bool TentaPegarQuestao(out int indice)
+    bool TentaPegarQuestao(out int indice) //tenta pegar uma questão válida e disponível, se conseguir retorna true e o índice da questão, caso contrário retorna false
     {
         indice = -1;
 
         if (questao == null || questao.Count == 0)
         {
             return false;
+
         }
 
         while (true)
@@ -103,25 +104,25 @@ public class QuestionManager : MonoBehaviour
             {
                 QuestaoSO pergunta = questao[i];
 
-                if (pergunta == null || !pergunta.EstaValida())
+                if (pergunta == null || !pergunta.EstaValida()) //verifica se a questão é nula ou inválida, e se for, ignora ela
                 {
                     continue;
                 }
 
-                if (pergunta.Nivel == nivelAtual && !questoesRespondidas.Contains(i))
+                if (pergunta.Nivel == nivelAtual && !questoesRespondidas.Contains(i)) //verifica se a questão é do nível atual e se ela ainda não foi respondida, e se for, adiciona ela à lista de disponíveis
                 {
                     indicesDisponiveis.Add(i);
-                }
+                }     
             }
 
-            if (indicesDisponiveis.Count > 0)
+            if (indicesDisponiveis.Count > 0) //se tiver questões disponíveis para o nível atual, escolhe uma aleatoriamente
             {
                 indice = indicesDisponiveis[Random.Range(0, indicesDisponiveis.Count)];
                 questoesRespondidas.Add(indice);
                 return true;
             }
 
-
+            //se não tiver questões disponíveis para o nível atual, tenta aumentar a dificuldade para ver se tem questões disponíveis para o próximo nível, e se não tiver mais níveis para aumentar, retorna false
             if (!AumentarDificuldade())
             {
                 return false;
@@ -129,7 +130,17 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    bool AumentarDificuldade()
+
+    void ControlaAvancoNivel() //controla o avanço de nível, aumentando o contador de perguntas respondidas no nível atual, e se atingir o limite de perguntas por nível, reseta o contador e aumenta a dificuldade
+    {
+        contadorPerguntasNivel++;
+        if (contadorPerguntasNivel >= perguntasPorNivel)
+        {
+            contadorPerguntasNivel = 0;
+            AumentarDificuldade();
+        }
+    }
+    bool AumentarDificuldade() //tenta aumentar a dificuldade para o próximo nível, se tiver um próximo nível disponível, retorna true, caso contrário retorna false
     {
         int proximoNivel = (int)nivelAtual + 1;
 
@@ -141,44 +152,13 @@ public class QuestionManager : MonoBehaviour
         nivelAtual = (NivelQuestao)proximoNivel;
         return true;
     }
-    void AtualizaTextoQuestao()
+    void AtualizaTextoQuestao() //atualiza o texto da questão na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado
     {
         if (txtQuestao != null)
         {
             txtQuestao.text = questaoAtual.txtQuestao;
         }
     }
-
-    //void AtualizaImagens()
-    //{
-    //    if (imgQuestao == null)
-    //    {
-    //        return;
-    //    }
-
-    //    for (int i = 0; i < imgQuestao.Length; i++)
-    //    {
-    //        Image imagem = imgQuestao[i];
-
-    //        if (imagem == null)
-    //        {
-    //            continue;
-    //        }
-
-    //        bool temImagem = questaoAtual.TemImagem(i);
-    //        imagem.gameObject.SetActive(temImagem);
-    //        imagem.sprite = temImagem ? questaoAtual.imgQuestao[i] : null;
-    //    }
-    //}
-
-    //void AtualizaAjuda()
-    //{
-    //    if (txtAjuda != null)
-    //    {
-    //        txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
-    //    }
-    //}
-
     void ConfiguraBotoes()
     {
         for (int i = 0; i < btnOpcoes.Length; i++)
@@ -215,23 +195,23 @@ public class QuestionManager : MonoBehaviour
             }
         }
     }
-
+    //sobrecarga do método para confirmar a resposta, permitindo passar a resposta selecionada como string, e encontrando o índice correspondente na lista de opções da questão atual antes de chamar a função para processar a resposta selecionada
     public void ConfirmaResposta(string resposta)
     {
         if (questaoAtual == null || questaoAtual.opcao == null)
         {
             return;
         }
-
+         
         ConfirmaResposta(questaoAtual.opcao.IndexOf(resposta));
     }
 
-    public void ConfirmaResposta(int indiceOpcao)
+    public void ConfirmaResposta(int indiceOpcao) //sobrecarga do método para confirmar a resposta, permitindo passar o índice da opção selecionada diretamente, e chamando a função para processar a resposta selecionada
     {
         SelecionarOpcao(indiceOpcao);
     }
 
-    public void SelecionarOpcao(int indiceOpcao)
+    public void SelecionarOpcao(int indiceOpcao) //processa a resposta selecionada, verificando se a resposta já foi confirmada para evitar processar múltiplas respostas, e se a resposta estiver correta, atualiza a pontuação e o feedback, e agenda a próxima questão
     {
         if (questaoAtual == null || respostaConfirmada)
         {
@@ -245,49 +225,41 @@ public class QuestionManager : MonoBehaviour
 
         if (acertou)
         {
-            //AtualizaPontuacao();
-            //AtualizaFeedback("Resposta correta!");
+            pontuacao += pontosPorAcerto;
+            AtualizaPontuacao();
+            AtualizaFeedback("Resposta correta!");
 
-            //if (nivelAtual == NivelQuestao.ValeTudo)
-            //{
-            //    FinalizaJogo("Parabens, voce chegou ao fim!");
-            //    return;
-            //}
+            ControlaAvancoNivel();
 
-            AumentarDificuldade();
             AgendaProximaQuestao();
             return;
         }
 
-        //string respostaCorreta = questaoAtual.OpcaoCorreta();
-        //AtualizaFeedback(string.IsNullOrEmpty(respostaCorreta)
-        //    ? "Resposta errada."
-        //    : $"Resposta errada. Correta: {respostaCorreta}");
     }
 
-    void AgendaProximaQuestao()
+    void AgendaProximaQuestao() //agenda a próxima questão para ser construída depois de um tempo, verificando se o avanço automático está habilitado antes de iniciar a rotina, para evitar que o jogo avance automaticamente se essa opção estiver desativada
+    {
+        if (!avancarAutomaticamente)
         {
-            if (!avancarAutomaticamente)
-            {
-                return;
-            }
-
-            if (rotinaAvancar != null)
-            {
-                StopCoroutine(rotinaAvancar);
-            }
-
-            rotinaAvancar = StartCoroutine(AvancaDepoisDoTempo());
+            return;
         }
 
-        IEnumerator AvancaDepoisDoTempo()
+        if (rotinaAvancar != null)
         {
-            yield return new WaitForSeconds(Mathf.Max(0.1f, tempoParaAvancar));
-            rotinaAvancar = null;
-            ConstroiQuestao();
+            StopCoroutine(rotinaAvancar);
         }
 
-    void DefineBotoesInterativos(bool ativo)
+        rotinaAvancar = StartCoroutine(AvancaDepoisDoTempo());
+    }
+
+    IEnumerator AvancaDepoisDoTempo() //rotina para avançar automaticamente para a próxima questão depois de um tempo, aguardando o tempo configurado antes de chamar a função para construir a próxima questão
+    {
+        yield return new WaitForSeconds(Mathf.Max(0.1f, tempoParaAvancar));
+        rotinaAvancar = null;
+        ConstroiQuestao();
+    }
+
+    void DefineBotoesInterativos(bool ativo) //ativa ou desativa a interatividade dos botões de resposta, verificando se o array de botões existe antes de tentar acessar, para evitar erros caso ele não esteja configurado
     {
         if (btnOpcoes == null)
         {
@@ -303,30 +275,58 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    //void AtualizaPontuacao()
+    void AtualizaPontuacao() //atualiza o texto de pontuação na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado
+    {
+        if (txtPontuacao != null)
+        {
+            txtPontuacao.text = $"Pontuacao: {pontuacao}";
+        }
+    }
+
+    void AtualizaFeedback(string mensagem)//atualiza o texto de feedback na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado
+    {
+        if (txtFeedback != null)
+        {
+            txtFeedback.text = mensagem;
+        }
+    }
+
+
+
+    void FinalizaJogo(string mensagem)//finaliza o jogo, mostrando uma mensagem de feedback e desativando os botões para evitar que o jogador continue interagindo
+    {
+        AtualizaFeedback(mensagem);
+        DefineBotoesInterativos(false);
+    }
+
+    //void AtualizaImagens()
     //{
-    //    if (txtPontuacao != null)
+    //    if (imgQuestao == null)
     //    {
-    //        txtPontuacao.text = $"Pontuacao: {pontuacao}";
+    //        return;
+    //    }
+
+    //    for (int i = 0; i < imgQuestao.Length; i++)
+    //    {
+    //        Image imagem = imgQuestao[i];
+
+    //        if (imagem == null)
+    //        {
+    //            continue;
+    //        }
+
+    //        bool temImagem = questaoAtual.TemImagem(i);
+    //        imagem.gameObject.SetActive(temImagem);
+    //        imagem.sprite = temImagem ? questaoAtual.imgQuestao[i] : null;
     //    }
     //}
 
-    //void AtualizaFeedback(string mensagem)
+    //void AtualizaAjuda()
     //{
-    //    if (txtFeedback != null)
+    //    if (txtAjuda != null)
     //    {
-    //        txtFeedback.text = mensagem;
+    //        txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
     //    }
     //}
 
-
-
-    //void FinalizaJogo(string mensagem)
-    //{
-    //    AtualizaFeedback(mensagem);
-    //    DefineBotoesInterativos(false);
-    //}
 }
-
-
-

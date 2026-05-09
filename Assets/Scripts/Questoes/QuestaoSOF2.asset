@@ -20,5 +20,7 @@ MonoBehaviour:
   - A quantidade de estrofes
   - O ritmo do poema
   Nivel: 0
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 00010000
+  Ajuda: 
