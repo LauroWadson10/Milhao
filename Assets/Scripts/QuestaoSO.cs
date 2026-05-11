@@ -43,7 +43,6 @@ public class QuestaoSO : ScriptableObject
     public bool EhOpcaoCorreta(int indice)
     {
         return correto != null && indice >= 0 && indice < correto.Count && correto[indice];
-        Debug.Log($"Opção {indice} é correta: {correto[indice]}");
     }
     public int IndiceCorreto
     {
@@ -61,7 +60,6 @@ public class QuestaoSO : ScriptableObject
                     return i;
                 }
             }
-
             return -1;
         }
     }

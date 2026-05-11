@@ -14,6 +14,11 @@ public class QuestionManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] Button[] btnOpcoes = new Button[4];
 
+    [Header("Painel de confirmação")]
+    [SerializeField] private GameObject painelConfirmacao;
+    [SerializeField] private Button sim;
+    [SerializeField] private Button nao;
+
     [Space]
     [Header("Textos")]
     [SerializeField] TMP_Text txtAjuda;
@@ -40,6 +45,7 @@ public class QuestionManager : MonoBehaviour
     int contadorPerguntasNivel = 0;
     readonly List<int> questoesRespondidas = new(); //para evitar repetir questões já respondidas
     Coroutine rotinaAvancar; //para controlar a rotina de avançar automaticamente para a próxima questão 
+    int indiceOpcaoSelecionada = -1; //índice da opção selecionada pelo jogador, para confirmar a resposta correta ou errada
 
     public static QuestionManager instance;
 
@@ -66,7 +72,12 @@ public class QuestionManager : MonoBehaviour
         questoesRespondidas.Clear(); //limpa a lista de questões respondidas para começar do zero
         ConstroiQuestao(); 
         contadorPerguntasNivel = 0; 
-       
+        painelConfirmacao.SetActive(false);
+        sim.onClick.RemoveAllListeners();
+        nao.onClick.RemoveAllListeners();
+        sim.onClick.AddListener(ConfirmaResposta);
+        nao.onClick.AddListener(CancelaResposta);
+
     }
     void ConstroiQuestao()
     {
@@ -78,10 +89,13 @@ public class QuestionManager : MonoBehaviour
 
         questaoAtual = questao[indiceQuestao];
         respostaConfirmada = false;
+        indiceOpcaoSelecionada = -1;
+        painelConfirmacao.SetActive(false);
+        DefineBotoesInterativos(true);
 
         AtualizaTextoQuestao();
         //AtualizaImagens();
-        //AtualizaAjuda();
+        AtualizaAjuda();
         ConfiguraBotoes();
         
     }
@@ -159,7 +173,7 @@ public class QuestionManager : MonoBehaviour
             txtQuestao.text = questaoAtual.txtQuestao;
         }
     }
-    void ConfiguraBotoes()
+    void ConfiguraBotoes() 
     {
         for (int i = 0; i < btnOpcoes.Length; i++)
         {
@@ -196,30 +210,18 @@ public class QuestionManager : MonoBehaviour
         }
     }
     //sobrecarga do método para confirmar a resposta, permitindo passar a resposta selecionada como string, e encontrando o índice correspondente na lista de opções da questão atual antes de chamar a função para processar a resposta selecionada
-    public void ConfirmaResposta(string resposta)
+    public void ConfirmaResposta()
     {
-        if (questaoAtual == null || questaoAtual.opcao == null)
+        if (questaoAtual == null || respostaConfirmada || indiceOpcaoSelecionada < 0) 
         {
             return;
         }
-         
-        ConfirmaResposta(questaoAtual.opcao.IndexOf(resposta));
-    }
 
-    public void ConfirmaResposta(int indiceOpcao) //sobrecarga do método para confirmar a resposta, permitindo passar o índice da opção selecionada diretamente, e chamando a função para processar a resposta selecionada
-    {
-        SelecionarOpcao(indiceOpcao);
-    }
-
-    public void SelecionarOpcao(int indiceOpcao) //processa a resposta selecionada, verificando se a resposta já foi confirmada para evitar processar múltiplas respostas, e se a resposta estiver correta, atualiza a pontuação e o feedback, e agenda a próxima questão
-    {
-        if (questaoAtual == null || respostaConfirmada)
-        {
-            return;
-        }
+        painelConfirmacao.SetActive(false);
 
         respostaConfirmada = true;
-        bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcao);
+
+        bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcaoSelecionada);
 
         DefineBotoesInterativos(false);
 
@@ -235,8 +237,31 @@ public class QuestionManager : MonoBehaviour
             return;
         }
 
+        AtualizaFeedback("Resposta errada!");
     }
 
+    public void CancelaResposta()
+    {
+        indiceOpcaoSelecionada = -1;
+        painelConfirmacao.SetActive(false);
+    }
+
+    public void ConfirmaResposta(int indiceOpcao) //sobrecarga do método para confirmar a resposta, permitindo passar o índice da opção selecionada diretamente, e chamando a função para processar a resposta selecionada
+    {
+        SelecionarOpcao(indiceOpcao);
+    }
+
+    public void SelecionarOpcao(int indiceOpcao)
+    {
+        if (questaoAtual == null || respostaConfirmada)
+    {
+        return;
+    }
+
+        indiceOpcaoSelecionada = indiceOpcao;
+        painelConfirmacao.SetActive(true);
+    }
+   
     void AgendaProximaQuestao() //agenda a próxima questão para ser construída depois de um tempo, verificando se o avanço automático está habilitado antes de iniciar a rotina, para evitar que o jogo avance automaticamente se essa opção estiver desativada
     {
         if (!avancarAutomaticamente)
@@ -299,34 +324,13 @@ public class QuestionManager : MonoBehaviour
         DefineBotoesInterativos(false);
     }
 
-    //void AtualizaImagens()
-    //{
-    //    if (imgQuestao == null)
-    //    {
-    //        return;
-    //    }
-
-    //    for (int i = 0; i < imgQuestao.Length; i++)
-    //    {
-    //        Image imagem = imgQuestao[i];
-
-    //        if (imagem == null)
-    //        {
-    //            continue;
-    //        }
-
-    //        bool temImagem = questaoAtual.TemImagem(i);
-    //        imagem.gameObject.SetActive(temImagem);
-    //        imagem.sprite = temImagem ? questaoAtual.imgQuestao[i] : null;
-    //    }
-    //}
-
-    //void AtualizaAjuda()
-    //{
-    //    if (txtAjuda != null)
-    //    {
-    //        txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
-    //    }
-    //}
+    //atualiza o texto de ajuda na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado, e mostrando a ajuda apenas se a questão atual tiver uma ajuda disponível
+    void AtualizaAjuda()
+    {
+        if (txtAjuda != null)
+        {
+            txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
+        }
+    }
 
 }

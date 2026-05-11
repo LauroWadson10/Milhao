@@ -6,12 +6,12 @@ public class BotaoResposta : MonoBehaviour
     string resposta;
     int indiceResposta = -1;
 
-    public void RegistraResposta(string resp)
+    public void RegistraResposta(string resp) // Sobrecarga para resposta sem índice
     {
         RegistraResposta(resp, -1);
     }
 
-    public void RegistraResposta(string resp, int indice)
+    public void RegistraResposta(string resp, int indice) // Sobrecarga para resposta com índice
     {
         resposta = resp;
         indiceResposta = indice;
@@ -24,7 +24,7 @@ public class BotaoResposta : MonoBehaviour
         }
     }
 
-    public void Responde()
+    public void Responde() // Método chamado ao clicar no botão
     {
         if (QuestionManager.instance == null)
         {
@@ -37,6 +37,6 @@ public class BotaoResposta : MonoBehaviour
             return;
         }
 
-        QuestionManager.instance.ConfirmaResposta(resposta);
+        QuestionManager.instance.ConfirmaResposta(int.Parse(resposta));
     }
 }
