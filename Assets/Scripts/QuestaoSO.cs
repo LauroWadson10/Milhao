@@ -67,12 +67,10 @@ public class QuestaoSO : ScriptableObject
     public string OpcaoCorreta()
     {
         int indice = IndiceCorreto;
-
         if (opcao == null || indice < 0 || indice >= opcao.Count)
         {
             return string.Empty;
         }
-
         return opcao[indice];
     }
 

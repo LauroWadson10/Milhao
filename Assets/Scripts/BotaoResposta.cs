@@ -4,7 +4,7 @@ using UnityEngine;
 public class BotaoResposta : MonoBehaviour
 {
     string resposta;
-    int indiceResposta = -1;
+    public int indiceResposta = -1;
 
     public void RegistraResposta(string resp) // Sobrecarga para resposta sem índice
     {
