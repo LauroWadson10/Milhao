@@ -19,6 +19,7 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] private GameObject painelConfirmacao;
     [SerializeField] private Button btnSim;
     [SerializeField] private Button btnNao;
+    [SerializeField] private Button FecharConfirmacao;
 
     [Header("Painel de ajuda")]
     [SerializeField] private Button FecharAjuda;
@@ -48,7 +49,7 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] bool avancarAutomaticamente = true; //temporariamente
     [SerializeField] int perguntasPorNivel = 5;
     [SerializeField] int AjudaPorNivel = 3;
-    [SerializeField] int PularQuestaoPorNivel = 3;
+    [SerializeField] int PularQuestaoPorNivel;
 
     NivelQuestao nivelAtual = NivelQuestao.Facil;
 
@@ -91,6 +92,8 @@ public class QuestionManager : MonoBehaviour
         contadorPerguntasNivel = 0;
         contadorPularQuestao = PularQuestaoPorNivel;
         contadorAjuda = AjudaPorNivel;
+        btnAjuda.interactable = true;
+        
     }
     void ConstroiQuestao()
     {
@@ -100,33 +103,39 @@ public class QuestionManager : MonoBehaviour
             return;
         }
 
-        
+        if (contadorAjuda >= 1)
+        {
+            btnAjuda.interactable = true;
+        }
+        else
+        {
+            btnAjuda.interactable = false;
+        }
+
+        if (contadorPularQuestao >= 1)
+        {
+            btnPularQuestao.interactable = true;
+        }
+        else
+        {
+            btnPularQuestao.interactable = false;
+        }
         questaoAtual = questao[indiceQuestao];
         respostaConfirmada = false;
         indiceOpcaoSelecionada = -1;
         painelConfirmacao.SetActive(false);
         DefineBotoesInterativos(true);
         painelConfirmacao.SetActive(false);
-        btnSim.onClick.RemoveAllListeners();
-        btnNao.onClick.RemoveAllListeners();
-        btnSim.onClick.AddListener(ConfirmaResposta);
-        btnNao.onClick.AddListener(CancelaResposta);
         btnAjuda.onClick.RemoveAllListeners();
         btnAjuda.onClick.AddListener(MostraAjuda);
         FecharAjuda.onClick.RemoveAllListeners();
         FecharAjuda.onClick.AddListener(EscondeAjuda);
-        btnPularQuestao.interactable = true;
         btnPularQuestao.onClick.RemoveAllListeners();
         btnPularQuestao.onClick.AddListener(PularQuestao);
-        btnAjuda.interactable = true;
-
-
-        ControlaQntPularQuestao();
         AtualizaTextoQuestao();
         //AtualizaImagens();
         AtualizaAjuda();
         ConfiguraBotoes();
-
     }
 
     bool TentaPegarQuestao(out int indice) //tenta pegar uma questão válida e disponível, se conseguir retorna true e o índice da questão, caso contrário retorna false
@@ -243,27 +252,18 @@ public class QuestionManager : MonoBehaviour
         {
             return;
         }
-
-        painelConfirmacao.SetActive(false);
-
         respostaConfirmada = true;
-
         bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcaoSelecionada);
-
         DefineBotoesInterativos(false);
-
         if (acertou)
         {
             pontuacao += pontosPorAcerto;
             AtualizaPontuacao();
             AtualizaFeedback("Resposta correta!");
-
             ControlaAvancoNivel();
-
             AgendaProximaQuestao();
             return;
         }
-
         AtualizaFeedback("Resposta errada!");
     }
 
@@ -271,11 +271,15 @@ public class QuestionManager : MonoBehaviour
     {
         indiceOpcaoSelecionada = -1;
         painelConfirmacao.SetActive(false);
+        btnNao.onClick.AddListener(CancelaResposta);
+        btnNao.onClick.RemoveAllListeners();
     }
 
     public void ConfirmaResposta(int indiceOpcao) //sobrecarga do método para confirmar a resposta, permitindo passar o índice da opção selecionada diretamente, e chamando a função para processar a resposta selecionada
     {
         SelecionarOpcao(indiceOpcao);
+        btnSim.onClick.RemoveAllListeners();
+        btnSim.onClick.AddListener(ConfirmaResposta);
     }
 
     public void SelecionarOpcao(int indiceOpcao)
@@ -284,9 +288,9 @@ public class QuestionManager : MonoBehaviour
         {
             return;
         }
-
         indiceOpcaoSelecionada = indiceOpcao;
         painelConfirmacao.SetActive(true);
+        btnNao.onClick.AddListener(EscondeConfirmacao);
     }
 
     public void AgendaProximaQuestao() //agenda a próxima questão para ser construída depois de um tempo, verificando se o avanço automático está habilitado antes de iniciar a rotina, para evitar que o jogo avance automaticamente se essa opção estiver desativada
@@ -370,6 +374,7 @@ public class QuestionManager : MonoBehaviour
         painelAjuda.SetActive(true);
         FecharAjuda.onClick.RemoveAllListeners();
         FecharAjuda.onClick.AddListener(EscondeAjuda);
+        btnAjuda.interactable = false; //desativa o botão de ajuda para evitar que o jogador tente usar a ajuda novamente enquanto o painel de ajuda está aberto
 
     }
 
@@ -380,22 +385,18 @@ public class QuestionManager : MonoBehaviour
             painelAjuda.SetActive(false);
         }
     }
-    void ControlaQntAjuda()//controla a quantidade de ajudas disponíveis, atualizando o texto correspondente e desativando o botão de ajuda se o contador chegar a zero, para evitar que o jogador tente usar mais ajudas do que o permitido
+    void ControlaQntAjuda()//c ontrola a quantidade de ajudas disponíveis, atualizando o texto correspondente e desativando o botão de ajuda se o contador chegar a zero, para evitar que o jogador tente usar mais ajudas do que o permitido
     {
         if (QntAjuda != null)
         {
             QntAjuda.text = $"{contadorAjuda}";
         }
 
-        if (contadorAjuda < 0)
-        {
-            contadorAjuda = 0;
-        }
-
         if (contadorAjuda <= 0)
         {
             btnAjuda.interactable = false;
         }
+
     }
     void ControlaQntPularQuestao()
     {
@@ -417,6 +418,15 @@ public class QuestionManager : MonoBehaviour
         }
         contadorPularQuestao--;
         ControlaQntPularQuestao();
+        btnPularQuestao.interactable = false; //desativa o botão de pular questão para evitar que o jogador tente pular novamente enquanto a questão atual ainda está sendo processada
         AgendaProximaQuestao();
     }
+    void EscondeConfirmacao()
+    {
+        if (painelConfirmacao != null && painelConfirmacao.activeSelf)
+        {
+            painelConfirmacao.SetActive(false);
+        }
+    }
 }
+
