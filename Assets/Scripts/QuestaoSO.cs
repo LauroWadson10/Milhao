@@ -1,22 +1,23 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "QuestaoSO", menuName = "Scriptable Objects/QuestaoSO")]
 public class QuestaoSO : ScriptableObject
 {
-    [TextArea(3,10)]
+    [TextArea(3, 10)]
     [SerializeField] public string txtQuestao;
 
     [SerializeField] public List<string> opcao = new();
 
     [SerializeField] public NivelQuestao Nivel;
 
+    [FormerlySerializedAs("ImgQuestao")]
     [SerializeField] public Sprite[] imgQuestao = new Sprite[2];
 
     [SerializeField] public List<bool> correto = new();
 
-    [TextArea(2,8)]
+    [TextArea(2, 8)]
     [SerializeField] public string Ajuda;
 
     public int QuantidadeOpcoes
@@ -31,6 +32,7 @@ public class QuestaoSO : ScriptableObject
             return 0;
         }
     }
+
     public bool TemAjuda => !string.IsNullOrWhiteSpace(Ajuda);
 
     public bool TemImagem(int indice)
@@ -38,30 +40,50 @@ public class QuestaoSO : ScriptableObject
         return imgQuestao != null && indice >= 0 && indice < imgQuestao.Length && imgQuestao[indice] != null;
     }
 
-    public string OpcaoCorreta()
+    public bool EhOpcaoCorreta(int indice)
     {
-        for(int i = 0; i < correto.Count; i++)
+        return correto != null && indice >= 0 && indice < correto.Count && correto[indice];
+    }
+    public int IndiceCorreto
+    {
+        get
         {
-            if (correto[i])
-                return opcao[i];
-        }
+            if (correto == null)
+            {
+                return -1;
+            }
 
-        return null;
+            for (int i = 0; i < correto.Count; i++)
+            {
+                if (correto[i])
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 
-    //public bool EhOpcaoCorreta(int x)
-    //{
-    //    if(x == IndiceCorreto)
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-    //}
+    public string OpcaoCorreta()
+    {
+        int indice = IndiceCorreto;
+        if (opcao == null || indice < 0 || indice >= opcao.Count)
+        {
+            return string.Empty;
+        }
+        return opcao[indice];
+    }
 
+    public bool EstaValida()
+    {
+        int indiceCorreto = IndiceCorreto;
 
+        return !string.IsNullOrWhiteSpace(txtQuestao)
+            && opcao != null
+            && opcao.Count > 0
+            && indiceCorreto >= 0
+            && indiceCorreto < opcao.Count;
+    }
     public enum NivelQuestao
     {
         Facil,
@@ -69,6 +91,4 @@ public class QuestaoSO : ScriptableObject
         Dificil,
         ValeTudo
     }
-
 }
-
