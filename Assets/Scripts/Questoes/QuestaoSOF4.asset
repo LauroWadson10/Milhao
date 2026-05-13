@@ -15,13 +15,13 @@ MonoBehaviour:
   txtQuestao: "Para que o leitor compreenda totalmente o humor ou a melancolia da
     par\xF3dia \"No meio do meu peito\", \xE9 necess\xE1rio que ele:     "
   opcao:
-  - "Leia apenas o dicion\xE1rio de rimas. \t\t\t\t\t\t\t\t\t "
-  - "Conhe\xE7a a biografia completa do autor da par\xF3dia. \t\t\t\t\t\t\t\t\t "
-  - "Identifique a rela\xE7\xE3o com o poema original de Carlos Drummond de Andrade.
-    \t\t\t\t\t\t\t\t\t "
-  - "Ignore as semelhan\xE7as visuais entre os dois textos.\t\t\t\t\t\t\t\t\t "
+  - "Leia apenas o dicion\xE1rio de rimas."
+  - "Conhe\xE7a a biografia completa do autor da par\xF3dia.\t "
+  - "Identifique a rela\xE7\xE3o com o poema original de Carlos Drummond de Andrade."
+  - "Ignore as semelhan\xE7as visuais entre os dois textos."
   Nivel: 0
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 00000100
   Ajuda: "Alguns textos dialogam com outros j\xE1 conhecidos, e compreender essa
     rela\xE7\xE3o ajuda na interpreta\xE7\xE3o.    "

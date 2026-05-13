@@ -16,13 +16,11 @@ MonoBehaviour:
     Henrique & Juliano. A manuten\xE7\xE3o da estrutura e do paralelismo da m\xFAsica
     original na par\xF3dia tem como principal efeito:  "
   opcao:
-  - "Impedir a compreens\xE3o do texto.\t\t\t\t\t\t\t\t\t "
-  - "Eliminar qualquer tra\xE7o do texto original.\t\t\t\t\t\t\t\t\t "
+  - "Impedir a compreens\xE3o do texto.\t"
+  - "Eliminar qualquer tra\xE7o do texto original. "
   - "Tornar o texto apenas uma c\xF3pia sem altera\xE7\xE3o."
   - "Refor\xE7ar a rela\xE7\xE3o com o texto de origem ao mesmo tempo em que produz
     um novo efeito de sentido."
-  respostaCorreta: "Refor\xE7ar a rela\xE7\xE3o com o texto de origem ao mesmo tempo
-    em que produz um novo efeito de sentido."
   Nivel: 2
   imgQuestao:
   - {fileID: 0}

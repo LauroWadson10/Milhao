@@ -16,11 +16,12 @@ MonoBehaviour:
     a partir dele para responder \xE0s quest\xF5es:  Ao parodiar o texto, o autor:"
   opcao:
   - "Mant\xE9m a organiza\xE7\xE3o visual e altera o conte\xFAdo original."
-  - Muda completamente a forma do texto
-  - Apenas copia o texto original
-  - "N\xE3o estabelece rela\xE7\xE3o com o texto original"
+  - Muda completamente a forma do texto.
+  - Apenas copia o texto original.
+  - "N\xE3o estabelece rela\xE7\xE3o com o texto original."
   Nivel: 0
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 01000000
   Ajuda: "Par\xF3dia po\xE9tica \xE9 a recria\xE7\xE3o de um texto j\xE1 existente,
     mantendo elementos da sua estrutura, como ritmo, repeti\xE7\xE3o e organiza\xE7\xE3o

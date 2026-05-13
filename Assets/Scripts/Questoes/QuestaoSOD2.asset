@@ -16,12 +16,13 @@ MonoBehaviour:
     pessoas cru\xE9is em um relacionamento. Na par\xF3dia, a express\xE3o \"afundar
     no barco\" sugere que o maior perigo enfrentado pela minha letra agora \xE9:"
   opcao:
-  - "O medo de nadar em \xE1guas profundas e desconhecidas. "
-  - 'A necessidade de pedir desculpas por erros cometidos no passado. '
+  - "O medo de nadar em \xE1guas profundas e desconhecidas."
+  - A necessidade de pedir desculpas por erros cometidos no passado.
   - 'O impacto negativo de mentiras e fofocas espalhadas sobre sua vida. '
   - "A vontade de investigar quem s\xE3o as pessoas que o tra\xEDram."
   Nivel: 2
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 00000100
   Ajuda: "Em m\xFAsicas e poemas, \xE9 comum o uso de figuras de linguagem, como
     a met\xE1fora, que consiste em atribuir novos sentidos a palavras e express\xF5es.\u2003"

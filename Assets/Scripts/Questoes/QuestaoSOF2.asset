@@ -15,10 +15,10 @@ MonoBehaviour:
   txtQuestao: "A substitui\xE7\xE3o da palavra \u201Cpedra\u201D por \u201Cvazio\u201D
     na par\xF3dia altera principalmente:"
   opcao:
-  - "A organiza\xE7\xE3o dos versos"
-  - "O tema, transformando obst\xE1culo f\xEDsico em sentimento interno"
-  - A quantidade de estrofes
-  - O ritmo do poema
+  - "A organiza\xE7\xE3o dos versos."
+  - "O tema, transformando obst\xE1culo f\xEDsico em sentimento interno."
+  - A quantidade de estrofes.
+  - O ritmo do poema.
   Nivel: 0
   imgQuestao:
   - {fileID: 0}

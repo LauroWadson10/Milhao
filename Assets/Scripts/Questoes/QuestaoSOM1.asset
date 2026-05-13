@@ -15,12 +15,13 @@ MonoBehaviour:
   txtQuestao: "A rela\xE7\xE3o entre os dois textos se constr\xF3i principalmente
     porque a par\xF3dia:    "
   opcao:
-  - "Imita o conte\xFAdo do poema original sem altera\xE7\xF5es\t\t\t\t\t\t\t\t\t "
-  - "Mant\xE9m a organiza\xE7\xE3o dos versos, mas adapta o tema ao contexto escolar\t\t\t\t\t\t\t\t\t "
-  - "Abandona completamente a estrutura do texto original\t\t\t\t\t\t\t\t\t "
-  - "Utiliza linguagem cient\xEDfica para modificar o poema\t\t\t\t\t\t\t\t\t "
+  - "Imita o conte\xFAdo do poema original sem altera\xE7\xF5es."
+  - "Mant\xE9m a organiza\xE7\xE3o dos versos, mas adapta o tema ao contexto escolar.\t "
+  - Abandona completamente a estrutura do texto original.
+  - "Utiliza linguagem cient\xEDfica para modificar o poema."
   Nivel: 1
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 00010000
   Ajuda: "Alguns textos se constroem a partir de outros, estabelecendo rela\xE7\xF5es
     que influenciam seus sentidos.    "

@@ -15,12 +15,13 @@ MonoBehaviour:
   txtQuestao: "No poema, a repeti\xE7\xE3o da express\xE3o \u201Ctinha um vazio\u201D
     \xE9 um recurso que serve para: "
   opcao:
-  - "Indicar que o vazio \xE9 um fato passageiro. \t\t\t\t\t\t\t\t\t "
-  - "Mostrar que o autor cometeu um erro de digita\xE7\xE3o. \t\t\t\t\t\t\t\t\t "
-  - "Sugerir que o autor n\xE3o tinha outras palavras para usar.\t\t\t\t\t\t\t\t\t "
-  - "Enfatizar que o sentimento \xE9 intenso e persistente. \t\t\t\t\t\t\t\t\t "
+  - "Indicar que o vazio \xE9 um fato passageiro."
+  - "Mostrar que o autor cometeu um erro de digita\xE7\xE3o."
+  - "Sugerir que o autor n\xE3o tinha outras palavras para usar."
+  - "Enfatizar que o sentimento \xE9 intenso e persistente."
   Nivel: 0
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 00000001
   Ajuda: "A forma como as palavras se repetem em um texto pode contribuir para a
     constru\xE7\xE3o de sentidos.    "

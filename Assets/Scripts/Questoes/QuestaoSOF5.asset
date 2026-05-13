@@ -16,12 +16,13 @@ MonoBehaviour:
     autor mantenha a mancha gr\xE1fica do texto original. Esse recurso visual tem
     como objetivo principal:    "
   opcao:
-  - "Esconder que o texto \xE9 uma c\xF3pia do original. \t\t\t\t\t\t\t\t\t "
-  - "Fazer com que o leitor identifique imediatamente qual texto est\xE1 sendo parodiado.\t\t\t\t\t\t\t\t\t "
-  - "Demonstrar que o autor n\xE3o tem criatividade para criar novas formas. \t\t\t\t\t\t\t\t\t "
-  - "Indicar que o poema original foi escrito de forma errada.\t\t\t\t\t\t\t\t\t "
+  - "Esconder que o texto \xE9 uma c\xF3pia do original."
+  - "Fazer com que o leitor identifique imediatamente qual texto est\xE1 sendo parodiado."
+  - "Demonstrar que o autor n\xE3o tem criatividade para criar novas formas."
+  - Indicar que o poema original foi escrito de forma errada.
   Nivel: 0
-  ImgQuestao: {fileID: 0}
+  imgQuestao:
+  - {fileID: 0}
   correto: 00010000
   Ajuda: "A mancha gr\xE1fica refere-se \xE0 forma como o texto se organiza visualmente
     na p\xE1gina, como a disposi\xE7\xE3o dos versos e estrofes, podendo contribuir
