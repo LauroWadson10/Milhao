@@ -5,44 +5,32 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static QuestaoSO;
+using static UnityEditor.Progress;
 
 public class QuestionManager : MonoBehaviour
 {
     [SerializeField] TMP_Text txtQuestao;
     [SerializeField] Image[] imgQuestao = new Image[2];
-
     [Space]
     [Header("UI")]
     [SerializeField] Button[] btnOpcoes = new Button[4];
-
     [Header("Painel de confirmação")]
     [SerializeField] private GameObject painelConfirmacao;
     [SerializeField] private Button btnSim;
     [SerializeField] private Button btnNao;
-    [SerializeField] private Button FecharConfirmacao;
-
     [Header("Painel de ajuda")]
     [SerializeField] private Button FecharAjuda;
     [SerializeField] private GameObject painelAjuda;
     [SerializeField] private Button btnAjuda;
-
     [Header("Painel de pular questão")]
     [SerializeField] private Button btnPularQuestao;
-
     [Space]
     [Header("Textos")]
     [SerializeField] TMP_Text txtAjuda;
-    [SerializeField] TMP_Text txtFeedback;
-    [SerializeField] TMP_Text txtPontuacao;
     [SerializeField] TMP_Text QntAjuda;
     [SerializeField] TMP_Text QntPularQuestao;
-
-
     [Space]
     [SerializeField] List<QuestaoSO> questao = new();
-
-    QuestaoSO questaoAtual;
-
     [Space]
     [Range(0, 5.0f)]
     [SerializeField] float tempoParaAvancar;
@@ -51,10 +39,10 @@ public class QuestionManager : MonoBehaviour
     [SerializeField] int AjudaPorNivel = 3;
     [SerializeField] int PularQuestaoPorNivel;
 
+    QuestaoSO questaoAtual;
     NivelQuestao nivelAtual = NivelQuestao.Facil;
+    public GameManager GameManager;
 
-    int pontosPorAcerto = 0; //temporariamente
-    int pontuacao;
     int indiceQuestao; //índice da questão atual dentro da lista de questões
     bool respostaConfirmada; //para que ele não permita clicar em mais de uma resposta
     int contadorPerguntasNivel = 0;
@@ -65,6 +53,7 @@ public class QuestionManager : MonoBehaviour
     int contadorPularQuestao = 3; //contador para limitar o uso do pular questão, se necessário
 
     public static QuestionManager instance;
+
 
 
     private void Awake()
@@ -85,7 +74,6 @@ public class QuestionManager : MonoBehaviour
 
     public void IniciarJogo()
     {
-        pontuacao = 0; //temporariamente
         nivelAtual = NivelQuestao.Facil;
         questoesRespondidas.Clear(); //limpa a lista de questões respondidas para começar do zero
         ConstroiQuestao();
@@ -99,10 +87,8 @@ public class QuestionManager : MonoBehaviour
     {
         if (!TentaPegarQuestao(out indiceQuestao))
         {
-            FinalizaJogo("Voce respondeu todas as perguntas!");
             return;
         }
-
         if (contadorAjuda >= 1)
         {
             btnAjuda.interactable = true;
@@ -120,18 +106,22 @@ public class QuestionManager : MonoBehaviour
         {
             btnPularQuestao.interactable = false;
         }
+
         questaoAtual = questao[indiceQuestao];
         respostaConfirmada = false;
         indiceOpcaoSelecionada = -1;
         painelConfirmacao.SetActive(false);
+
         DefineBotoesInterativos(true);
-        painelConfirmacao.SetActive(false);
+
         btnAjuda.onClick.RemoveAllListeners();
         btnAjuda.onClick.AddListener(MostraAjuda);
         FecharAjuda.onClick.RemoveAllListeners();
         FecharAjuda.onClick.AddListener(EscondeAjuda);
         btnPularQuestao.onClick.RemoveAllListeners();
         btnPularQuestao.onClick.AddListener(PularQuestao);
+
+        GameManager.AtualizaPremiacao();
         AtualizaTextoQuestao();
         //AtualizaImagens();
         AtualizaAjuda();
@@ -147,10 +137,9 @@ public class QuestionManager : MonoBehaviour
             return false;
 
         }
-
         while (true)
         {
-            List<int> indicesDisponiveis = new();
+            List<int> indicesDisponiveis = new(); 
 
             for (int i = 0; i < questao.Count; i++)
             {
@@ -211,6 +200,7 @@ public class QuestionManager : MonoBehaviour
     }
     void ConfiguraBotoes()
     {
+
         for (int i = 0; i < btnOpcoes.Length; i++)
         {
             Button botao = btnOpcoes[i];
@@ -252,19 +242,17 @@ public class QuestionManager : MonoBehaviour
         {
             return;
         }
+
         respostaConfirmada = true;
         bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcaoSelecionada);
         DefineBotoesInterativos(false);
         if (acertou)
         {
-            pontuacao += pontosPorAcerto;
-            AtualizaPontuacao();
-            AtualizaFeedback("Resposta correta!");
+            GameManager.AcertoContador();
             ControlaAvancoNivel();
             AgendaProximaQuestao();
             return;
         }
-        AtualizaFeedback("Resposta errada!");
     }
 
     public void CancelaResposta()
@@ -330,29 +318,6 @@ public class QuestionManager : MonoBehaviour
             }
         }
     }
-
-    void AtualizaPontuacao() //atualiza o texto de pontuação na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado
-    {
-        if (txtPontuacao != null)
-        {
-            txtPontuacao.text = $"Pontuacao: {pontuacao}";
-        }
-    }
-
-    void AtualizaFeedback(string mensagem)//atualiza o texto de feedback na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado
-    {
-        if (txtFeedback != null)
-        {
-            txtFeedback.text = mensagem;
-        }
-    }
-
-    void FinalizaJogo(string mensagem)//finaliza o jogo, mostrando uma mensagem de feedback e desativando os botões para evitar que o jogador continue interagindo
-    {
-        AtualizaFeedback(mensagem);
-        DefineBotoesInterativos(false);
-    }
-
     //atualiza o texto de ajuda na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado, e mostrando a ajuda apenas se a questão atual tiver uma ajuda disponível
     void AtualizaAjuda()
     {
@@ -361,7 +326,6 @@ public class QuestionManager : MonoBehaviour
             txtAjuda.text = questaoAtual.TemAjuda ? questaoAtual.Ajuda : string.Empty;
         }
     }
-
     void MostraAjuda() //mostra o painel de ajuda, verificando se a questão atual tem uma ajuda disponível antes de mostrar o painel, para evitar mostrar um painel vazio ou irrelevante
     {
         if (questaoAtual == null || !questaoAtual.TemAjuda)
@@ -377,7 +341,6 @@ public class QuestionManager : MonoBehaviour
         btnAjuda.interactable = false; //desativa o botão de ajuda para evitar que o jogador tente usar a ajuda novamente enquanto o painel de ajuda está aberto
 
     }
-
     void EscondeAjuda() //esconde o painel de ajuda, verificando se o painel está ativo antes de tentar esconder, para evitar erros caso ele já esteja escondido
     {
         if (painelAjuda != null && painelAjuda.activeSelf)
