@@ -121,7 +121,7 @@ public class QuestionManager : MonoBehaviour
         btnPularQuestao.onClick.RemoveAllListeners();
         btnPularQuestao.onClick.AddListener(PularQuestao);
 
-        GameManager.AtualizaPremiacao();
+        GameManager.AtualizaPremiacao(out _);
         AtualizaTextoQuestao();
         //AtualizaImagens();
         AtualizaAjuda();

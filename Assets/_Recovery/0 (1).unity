@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -3.2849045, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1490,7 +1490,7 @@ MonoBehaviour:
   btnNaoEncerrar: {fileID: 1463982313}
   PainelConfirmar: {fileID: 81521198}
   painelEncerrar: {fileID: 1431348296}
-  premiacao: 00000000f4010000e8030000dc050000d0070000c4090000b80b0000a00f00008813000010270000204e000030750000409c000050c30000a0860100400d0300e093040020a1070040420f00
+  premiacao: 00000000f4010000e8030000d0070000b80b0000a00f00008813000010270000204e000030750000409c000050c30000a0860100400d0300e093040020a1070040420f00
   txtAcertar: {fileID: 2069556688}
   txtParar: {fileID: 1359327549}
   txtErrar: {fileID: 263512630}
@@ -5026,7 +5026,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 2.6820335, y: 6.4770575, z: -1.4824487, w: 0}
+  m_margin: {x: 6.4722977, y: 6.4770575, z: -0.47171414, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7869,7 +7869,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 2.854456, y: 0, z: -0.26411438, w: 0}
+  m_margin: {x: 6.858906, y: 0, z: -1.0649567, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

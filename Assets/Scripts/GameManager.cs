@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    private int nivelAtual = 1; // Começa na pergunta 1
+    //private int nivelAtual = 1; // Começa na pergunta 1
     private int contadorAcertos;
 
     private void Awake()
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
         controladorBotoes();
         contadorAcertos = 1;
-        AtualizaPremiacao();
+        AtualizaPremiacao(out _);
     }
 
     void controladorBotoes()
@@ -68,48 +68,41 @@ public class GameManager : MonoBehaviour
         PainelConfirmar.SetActive(false);
     }
 
-    public void AtualizaPremiacao()
+    public bool AtualizaPremiacao(out int indice)
     {
-        // ACERTAR: valor do nível atual
-        int valorAcertar = premiacao[nivelAtual];
+        // Calcula índice com base nos acertos
+        indice = contadorAcertos - 1;
 
-        // PARAR: valor do nível anterior
-        int valorParar = premiacao[nivelAtual - 1];
+        // Se a lista estiver vazia, retorna falso
+        if (premiacao == null || premiacao.Count == 0)
+            return false;
 
-        // ERRAR: metade do PARAR, exceto no último nível que é R$ 0
-        int valorErrar = (nivelAtual >= premiacao.Count - 1) ? 0 : premiacao[nivelAtual - 1] / 2;
+        // Garante que o índice esteja dentro do tamanho da lista
+        if (indice < 0)
+            indice = 0;
+        else if (indice >= premiacao.Count)
+            indice = premiacao.Count - 1;
 
-        txtAcertar.text = FormatarDinheiro(valorAcertar);
-        txtParar.text = FormatarDinheiro(valorParar);
-        txtErrar.text = FormatarDinheiro(valorErrar);
+        // Atualiza o texto de Acertar
+        txtAcertar.text = $"R$ {premiacao[indice + 1] * 2:N0}";
+
+        // Atualiza o texto de Parar
+        if (indice > 0)
+            txtParar.text = $"R${premiacao[indice * 2] / 1:N0}";
+        else
+            txtParar.text = "R$ 0";
+
+        // Atualiza o texto de Errar
+        if (indice > 0)
+            txtErrar.text = $"R$ {premiacao[indice]:N0}";
+        else
+            txtErrar.text = "R$ 0";
+
+        return true;
     }
 
     public void AcertoContador()
     {
         contadorAcertos++;
-
-        if (nivelAtual < premiacao.Count - 1)
-        {
-            nivelAtual++;
-            AtualizaPremiacao();
-        }
-        else
-        {
-            Debug.Log("GANHOU O MILHÃO!");
-        }
-    }
-
-    // Chame quando o jogador errar uma pergunta
-    public void Errou()
-    {
-        int valorFinal = (nivelAtual >= premiacao.Count - 1) ? 0 : premiacao[nivelAtual - 1] / 2;
-        Debug.Log("Errou! Levou: " + FormatarDinheiro(valorFinal));
-        nivelAtual = 1;
-        AtualizaPremiacao();
-    }
-
-    private string FormatarDinheiro(int valor)
-    {
-        return "R$ " + valor.ToString("N0", new CultureInfo("pt-BR"));
     }
 }
