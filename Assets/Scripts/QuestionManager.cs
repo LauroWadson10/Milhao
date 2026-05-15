@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static QuestaoSO;
-using static UnityEditor.Progress;
+using DG.Tweening;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -34,30 +35,30 @@ public class QuestionManager : MonoBehaviour
     [Space]
     [Range(0, 5.0f)]
     [SerializeField] float tempoParaAvancar;
-    [SerializeField] bool avancarAutomaticamente = true; //temporariamente
-    [SerializeField] int perguntasPorNivel = 5;
-    [SerializeField] int AjudaPorNivel = 3;
     [SerializeField] int PularQuestaoPorNivel;
 
     QuestaoSO questaoAtual;
-    NivelQuestao nivelAtual = NivelQuestao.Facil;
+    NivelQuestao nivelAtual;
     public GameManager GameManager;
 
-    int indiceQuestao; //índice da questão atual dentro da lista de questões
-    bool respostaConfirmada; //para que ele não permita clicar em mais de uma resposta
-    int contadorPerguntasNivel = 0;
+    int indiceQuestao;
     int contadorAjuda; //contador para limitar o uso da ajuda, se necessário
-    readonly List<int> questoesRespondidas = new(); //para evitar repetir questões já respondidas
-    Coroutine rotinaAvancar; //para controlar a rotina de avançar automaticamente para a próxima questão 
-    int indiceOpcaoSelecionada = -1; //índice da opção selecionada pelo jogador, para confirmar a resposta correta ou errada
     int contadorPularQuestao = 3; //contador para limitar o uso do pular questão, se necessário
+    string respostaSelecionada; //string para armazenar a resposta selecionada pelo jogador, para confirmar a resposta correta ou errada
 
     public static QuestionManager instance;
 
+    Image botaoRespostaDada;
 
+    [Header("Cor dos botoes")]
+    [SerializeField] Color corAcerto;
+    [SerializeField] Color corErro;
+    [SerializeField] Color corNeutra;
 
     private void Awake()
     {
+        nivelAtual = MasterManager.instance.nivelAtual;
+
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -74,250 +75,85 @@ public class QuestionManager : MonoBehaviour
 
     public void IniciarJogo()
     {
-        nivelAtual = NivelQuestao.Facil;
-        questoesRespondidas.Clear(); //limpa a lista de questões respondidas para começar do zero
         ConstroiQuestao();
-        contadorPerguntasNivel = 0;
-        contadorPularQuestao = PularQuestaoPorNivel;
-        contadorAjuda = AjudaPorNivel;
-        btnAjuda.interactable = true;
-        
+        contadorPularQuestao = MasterManager.instance.contadorPularQuestao;
+        contadorAjuda = MasterManager.instance.contadorAjuda;
+
+        //Controla a disponiblidade dos botões
+        btnAjuda.interactable = contadorAjuda >= 1;
+        btnPularQuestao.interactable = contadorPularQuestao >= 1;
     }
     void ConstroiQuestao()
     {
-        if (!TentaPegarQuestao(out indiceQuestao))
+        do
         {
-            return;
-        }
-        if (contadorAjuda >= 1)
-        {
-            btnAjuda.interactable = true;
-        }
-        else
-        {
-            btnAjuda.interactable = false;
-        }
+            indiceQuestao = Random.Range(0, MasterManager.instance.questoes.Count);
 
-        if (contadorPularQuestao >= 1)
-        {
-            btnPularQuestao.interactable = true;
-        }
-        else
-        {
-            btnPularQuestao.interactable = false;
-        }
+            txtQuestao.text = MasterManager.instance.questoes[indiceQuestao].txtQuestao;
 
-        questaoAtual = questao[indiceQuestao];
-        respostaConfirmada = false;
-        indiceOpcaoSelecionada = -1;
-        painelConfirmacao.SetActive(false);
+            for(int i = 0; i < MasterManager.instance.questoes[indiceQuestao].QuantidadeOpcoes; i++)
+            {
+                if (i < btnOpcoes.Length)
+                {
+                    btnOpcoes[i].GetComponentInChildren<TMP_Text>().text = MasterManager.instance.questoes[indiceQuestao].opcao[i];
+                }
+            }
 
-        DefineBotoesInterativos(true);
+        } while (nivelAtual != MasterManager.instance.questoes[indiceQuestao].Nivel);
 
-        btnAjuda.onClick.RemoveAllListeners();
-        btnAjuda.onClick.AddListener(MostraAjuda);
-        FecharAjuda.onClick.RemoveAllListeners();
-        FecharAjuda.onClick.AddListener(EscondeAjuda);
-        btnPularQuestao.onClick.RemoveAllListeners();
-        btnPularQuestao.onClick.AddListener(PularQuestao);
+        print(MasterManager.instance.questoes[indiceQuestao].OpcaoCorreta());
 
-        GameManager.AtualizaPremiacao(out _);
-        AtualizaTextoQuestao();
+        questaoAtual = MasterManager.instance.questoes[indiceQuestao];
+
+        GameManager.AtualizaPremiacao();
         //AtualizaImagens();
         AtualizaAjuda();
-        ConfiguraBotoes();
     }
 
-    bool TentaPegarQuestao(out int indice) //tenta pegar uma questão válida e disponível, se conseguir retorna true e o índice da questão, caso contrário retorna false
-    {
-        indice = -1;
-
-        if (questao == null || questao.Count == 0)
-        {
-            return false;
-
-        }
-        while (true)
-        {
-            List<int> indicesDisponiveis = new(); 
-
-            for (int i = 0; i < questao.Count; i++)
-            {
-                QuestaoSO pergunta = questao[i];
-
-                if (pergunta == null || !pergunta.EstaValida()) //verifica se a questão é nula ou inválida, e se for, ignora ela
-                {
-                    continue;
-                }
-
-                if (pergunta.Nivel == nivelAtual && !questoesRespondidas.Contains(i)) //verifica se a questão é do nível atual e se ela ainda não foi respondida, e se for, adiciona ela à lista de disponíveis
-                {
-                    indicesDisponiveis.Add(i);
-                }
-            }
-
-            if (indicesDisponiveis.Count > 0) //se tiver questões disponíveis para o nível atual, escolhe uma aleatoriamente
-            {
-                indice = indicesDisponiveis[Random.Range(0, indicesDisponiveis.Count)];
-                questoesRespondidas.Add(indice);
-                return true;
-            }
-
-            //se não tiver questões disponíveis para o nível atual, tenta aumentar a dificuldade para ver se tem questões disponíveis para o próximo nível, e se não tiver mais níveis para aumentar, retorna false
-            if (!AumentarDificuldade())
-            {
-                return false;
-            }
-        }
-    }
-    void ControlaAvancoNivel() //controla o avanço de nível, aumentando o contador de perguntas respondidas no nível atual, e se atingir o limite de perguntas por nível, reseta o contador e aumenta a dificuldade
-    {
-        contadorPerguntasNivel++;
-        if (contadorPerguntasNivel >= perguntasPorNivel)
-        {
-            contadorPerguntasNivel = 0;
-            AumentarDificuldade();
-        }
-    }
-    bool AumentarDificuldade() //tenta aumentar a dificuldade para o próximo nível, se tiver um próximo nível disponível, retorna true, caso contrário retorna false
-    {
-        int proximoNivel = (int)nivelAtual + 1;
-
-        if (proximoNivel > (int)NivelQuestao.ValeTudo)
-        {
-            return false;
-        }
-
-        nivelAtual = (NivelQuestao)proximoNivel;
-        return true;
-    }
-    void AtualizaTextoQuestao() //atualiza o texto da questão na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado
-    {
-        if (txtQuestao != null)
-        {
-            txtQuestao.text = questaoAtual.txtQuestao;
-        }
-    }
-    void ConfiguraBotoes()
-    {
-
-        for (int i = 0; i < btnOpcoes.Length; i++)
-        {
-            Button botao = btnOpcoes[i];
-
-            if (botao == null)
-            {
-                continue;
-            }
-
-            bool temOpcao = i < questaoAtual.QuantidadeOpcoes;
-            botao.gameObject.SetActive(temOpcao);
-            botao.interactable = temOpcao;
-
-            if (!temOpcao)
-            {
-                continue;
-            }
-
-            BotaoResposta botaoResposta = botao.GetComponent<BotaoResposta>();
-
-            if (botaoResposta != null)
-            {
-                botaoResposta.RegistraResposta(questaoAtual.opcao[i], i);
-                continue;
-            }
-
-            TMP_Text textoBotao = botao.GetComponentInChildren<TMP_Text>();
-
-            if (textoBotao != null)
-            {
-                textoBotao.text = questaoAtual.opcao[i];
-            }
-        }
-    }
     //sobrecarga do método para confirmar a resposta, permitindo passar a resposta selecionada como string, e encontrando o índice correspondente na lista de opções da questão atual antes de chamar a função para processar a resposta selecionada
     public void ConfirmaResposta()
     {
-        if (questaoAtual == null || respostaConfirmada || indiceOpcaoSelecionada < 0)
+        if (questaoAtual.EhOpcaoCorreta(respostaSelecionada))
         {
-            return;
-        }
+            if(MasterManager.instance.idPremio == 15)
+            {
+                print("Fim de jogo");
+            }
+            else
+            {
+                MasterManager.instance.AcertaQuestao(indiceQuestao);
 
-        respostaConfirmada = true;
-        bool acertou = questaoAtual.EhOpcaoCorreta(indiceOpcaoSelecionada);
-        DefineBotoesInterativos(false);
-        if (acertou)
-        {
-            GameManager.AcertoContador();
-            ControlaAvancoNivel();
-            AgendaProximaQuestao();
-            return;
+                StartCoroutine(FinalizaQuestao());
+                print("Acertou");
+            }
+
+            botaoRespostaDada.DOColor(corAcerto, 0.5f).SetLoops(-1, LoopType.Yoyo);
         }
+        else
+        {
+            botaoRespostaDada.DOColor(corErro, 0.5f).SetLoops(-1, LoopType.Yoyo);
+        }
+    }
+
+    public void QuestionaResposta(string resp, Image img)
+    {
+        painelConfirmacao.SetActive(true);
+        respostaSelecionada = resp;
+        botaoRespostaDada = img;
     }
 
     public void CancelaResposta()
     {
-        indiceOpcaoSelecionada = -1;
         painelConfirmacao.SetActive(false);
-        btnNao.onClick.AddListener(CancelaResposta);
-        btnNao.onClick.RemoveAllListeners();
     }
 
-    public void ConfirmaResposta(int indiceOpcao) //sobrecarga do método para confirmar a resposta, permitindo passar o índice da opção selecionada diretamente, e chamando a função para processar a resposta selecionada
+    IEnumerator FinalizaQuestao()
     {
-        SelecionarOpcao(indiceOpcao);
-        btnSim.onClick.RemoveAllListeners();
-        btnSim.onClick.AddListener(ConfirmaResposta);
+        yield return new WaitForSeconds(2.0f);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void SelecionarOpcao(int indiceOpcao)
-    {
-        if (questaoAtual == null || respostaConfirmada)
-        {
-            return;
-        }
-        indiceOpcaoSelecionada = indiceOpcao;
-        painelConfirmacao.SetActive(true);
-        btnNao.onClick.AddListener(EscondeConfirmacao);
-    }
-
-    public void AgendaProximaQuestao() //agenda a próxima questão para ser construída depois de um tempo, verificando se o avanço automático está habilitado antes de iniciar a rotina, para evitar que o jogo avance automaticamente se essa opção estiver desativada
-    {
-        if (!avancarAutomaticamente)
-        {
-            return;
-        }
-
-        if (rotinaAvancar != null)
-        {
-            StopCoroutine(rotinaAvancar);
-        }
-
-        rotinaAvancar = StartCoroutine(AvancaDepoisDoTempo());
-    }
-
-    IEnumerator AvancaDepoisDoTempo() //rotina para avançar automaticamente para a próxima questão depois de um tempo, aguardando o tempo configurado antes de chamar a função para construir a próxima questão
-    {
-        yield return new WaitForSeconds(Mathf.Max(0.1f, tempoParaAvancar));
-        rotinaAvancar = null;
-        ConstroiQuestao();
-    }
-
-    void DefineBotoesInterativos(bool ativo) //ativa ou desativa a interatividade dos botões de resposta, verificando se o array de botões existe antes de tentar acessar, para evitar erros caso ele não esteja configurado
-    {
-        if (btnOpcoes == null)
-        {
-            return;
-        }
-
-        foreach (Button botao in btnOpcoes)
-        {
-            if (botao != null && botao.gameObject.activeSelf)
-            {
-                botao.interactable = ativo;
-            }
-        }
-    }
     //atualiza o texto de ajuda na interface, verificando se o componente de texto existe antes de tentar atualizar, para evitar erros caso ele não esteja configurado, e mostrando a ajuda apenas se a questão atual tiver uma ajuda disponível
     void AtualizaAjuda()
     {
@@ -376,13 +212,12 @@ public class QuestionManager : MonoBehaviour
     public void PularQuestao() //permite ao jogador pular a questão atual, verificando se o contador de pulos disponíveis é maior que zero antes de permitir o pulo, para evitar que o jogador tente pular mais vezes do que o permitido
     {
         if (contadorPularQuestao <= 0)
-        {
             return;
-        }
+
         contadorPularQuestao--;
         ControlaQntPularQuestao();
         btnPularQuestao.interactable = false; //desativa o botão de pular questão para evitar que o jogador tente pular novamente enquanto a questão atual ainda está sendo processada
-        AgendaProximaQuestao();
+        //AgendaProximaQuestao();
     }
     void EscondeConfirmacao()
     {
@@ -390,6 +225,11 @@ public class QuestionManager : MonoBehaviour
         {
             painelConfirmacao.SetActive(false);
         }
+    }
+
+    private void OnDisable()
+    {
+        DOTween.KillAll();
     }
 }
 

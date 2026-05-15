@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    int idPremio;
+
     //private int nivelAtual = 1; // Começa na pergunta 1
     private int contadorAcertos;
 
@@ -33,12 +35,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        idPremio = MasterManager.instance.idPremio;
         PainelConfirmar.SetActive(false);
         painelEncerrar.SetActive(false);
 
         controladorBotoes();
         contadorAcertos = 1;
-        AtualizaPremiacao(out _);
+        AtualizaPremiacao();
     }
 
     void controladorBotoes()
@@ -68,35 +71,36 @@ public class GameManager : MonoBehaviour
         PainelConfirmar.SetActive(false);
     }
 
-    public bool AtualizaPremiacao(out int indice)
+    public bool AtualizaPremiacao()
     {
-        // Calcula índice com base nos acertos
-        indice = contadorAcertos - 1;
-
-        // Se a lista estiver vazia, retorna falso
-        if (premiacao == null || premiacao.Count == 0)
-            return false;
-
-        // Garante que o índice esteja dentro do tamanho da lista
-        if (indice < 0)
-            indice = 0;
-        else if (indice >= premiacao.Count)
-            indice = premiacao.Count - 1;
-
         // Atualiza o texto de Acertar
-        txtAcertar.text = $"R$ {premiacao[indice + 1] * 2:N0}";
+        txtAcertar.text = $"R$ {premiacao[idPremio]:N0}";
 
-        // Atualiza o texto de Parar
-        if (indice > 0)
-            txtParar.text = $"R${premiacao[indice * 2] / 1:N0}";
-        else
-            txtParar.text = "R$ 0";
+        if(idPremio == premiacao.Count - 1)
+        {
+            if (idPremio > 0)
+                txtParar.text = $"R${premiacao[idPremio - 1]:N0}";
+            else
+                txtParar.text = "";
 
-        // Atualiza o texto de Errar
-        if (indice > 0)
-            txtErrar.text = $"R$ {premiacao[indice]:N0}";
+            // Atualiza o texto de Errar
+            if (idPremio > 0)
+                txtErrar.text = "0";
+        }
         else
-            txtErrar.text = "R$ 0";
+        {
+            // Atualiza o texto de Parar
+            if (idPremio > 0)
+                txtParar.text = $"R${premiacao[idPremio - 1]:N0}";
+            else
+                txtParar.text = "";
+
+            // Atualiza o texto de Errar
+            if (idPremio > 0)
+                txtErrar.text = $"R$ {premiacao[idPremio - 1] / 2:N0}";
+            else
+                txtErrar.text = "";
+        }
 
         return true;
     }

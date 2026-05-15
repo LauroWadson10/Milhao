@@ -40,9 +40,9 @@ public class QuestaoSO : ScriptableObject
         return imgQuestao != null && indice >= 0 && indice < imgQuestao.Length && imgQuestao[indice] != null;
     }
 
-    public bool EhOpcaoCorreta(int indice)
+    public bool EhOpcaoCorreta(string resp)
     {
-        return correto != null && indice >= 0 && indice < correto.Count && correto[indice];
+        return resp == OpcaoCorreta();
     }
     public int IndiceCorreto
     {
@@ -66,12 +66,13 @@ public class QuestaoSO : ScriptableObject
 
     public string OpcaoCorreta()
     {
-        int indice = IndiceCorreto;
-        if (opcao == null || indice < 0 || indice >= opcao.Count)
+        for(int i = 0; i < opcao.Count; i++)
         {
-            return string.Empty;
+            if (correto[i] == true)
+                return opcao[i];
         }
-        return opcao[indice];
+
+        return string.Empty;
     }
 
     public bool EstaValida()
